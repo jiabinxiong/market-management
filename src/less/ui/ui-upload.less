@@ -1,0 +1,39 @@
+.ui-upload {
+    float: left;
+    width: 100px;
+    height: 100px;
+
+    .icon-block {
+        width: 100px;
+        height: 100px;
+        // line-height: 100px;            
+        color: #e6e6e6;
+        cursor: pointer;
+        border: 1px dashed #e6e6e6;
+
+        .info {                
+            display: flex; 
+            justify-content: center; 
+            flex-direction: column;
+            height:100px;
+
+            .icon, .text {
+                display: block;    
+                text-align: center;
+                line-height: 20px;
+                font-weight: bold;
+            }
+
+            .icon {
+                font-size: 20px;                    
+            }
+
+        }
+
+        &:hover {
+            color: #42aeef;
+            border: 1px dashed #42aeef;
+        }
+    }
+}
+
