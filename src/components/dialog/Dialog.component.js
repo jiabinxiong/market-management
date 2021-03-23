@@ -54,7 +54,7 @@ class DialogComponent extends Component {
         }
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps, prevState, snapshot) {
         if(!this.state.show && this.state.visible) {
             this.setState({
                 show: this.props.show,

@@ -13,7 +13,10 @@ module.exports = {
         progress: true,
         open: true,
         port: 8000,
-        host: 'localhost'
+        host: 'localhost',
+        proxy: {
+            '/api': 'http://localhost:3000'
+        }
     },
     module: {
         rules: [

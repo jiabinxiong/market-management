@@ -8,10 +8,38 @@ import '../../less/market/market.less';
 
 const { Option } = Select;
 
+import PopComponent from '../../components/pop/Pop.component';
+
 export default class MarketPage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isNewMarketPop: false
+        };
+    }
     componentDidMount() {
         
     }
+
+    newMarketPopHandle() {
+        this.setState({
+            isNewMarketPop: true
+        });
+    }
+
+    closeMarketPopHandle() {
+        this.setState({
+            isNewMarketPop: false
+        });
+    }
+
+    closeCallbackFun() {
+        // console.log('a');
+        this.setState({
+            isNewMarketPop: false
+        });
+    }
+
     render() {
         return (
             <div className="market">
@@ -52,22 +80,27 @@ export default class MarketPage extends React.Component {
                         
                     </div> 
                     <div className="market-list">
-                        <PerfectScrollbar>
-                            <ul className="market-list-ul">                                    
-                                {
-                                    [1,2,3,4,5,6,7,8,9,10,11,12, 13, 14, 15].map((item, index) => <li className="li" key={item}>
-                                            <div className="l">
-                                                <div className="img"></div>
-                                            </div>
-                                            <div className="r">
-                                                <h3 className="sub-title">李克强总理出席记者会并回答中外记者提问</h3>
-                                                <p className="detail-text">3月11日，国务院总理李克强在北京人民中心的分会场采访。新</p>
-                                            </div>
-                                        </li>
-                                    )
-                                } 
-                            </ul>
-                        </PerfectScrollbar>
+                        <div className="market-list-none">
+                          还没有市场场，<span
+                                onClick={ () => this.newMarketPopHandle() }
+                                className="new-btn">去创建吧!{this.state.isNewMarketPop ? 'haha' : 'la'}</span>
+                        </div>
+                        {/*<PerfectScrollbar>*/}
+                        {/*    <ul className="market-list-ul">                                    */}
+                        {/*        {*/}
+                        {/*            [1,2,3,4,5,6,7,8,9,10,11,12, 13, 14, 15].map((item, index) => <li className="li" key={item}>*/}
+                        {/*                    <div className="l">*/}
+                        {/*                        <div className="img"></div>*/}
+                        {/*                    </div>*/}
+                        {/*                    <div className="r">*/}
+                        {/*                        <h3 className="sub-title">李克强总理出席记者会并回答中外记者提问</h3>*/}
+                        {/*                        <p className="detail-text">3月11日，国务院总理李克强在北京人民中心的分会场采访。新</p>*/}
+                        {/*                    </div>*/}
+                        {/*                </li>*/}
+                        {/*            )*/}
+                        {/*        } */}
+                        {/*    </ul>*/}
+                      {/*</PerfectScrollbar>*/}
                         
                     </div>
                 </div>
@@ -75,6 +108,13 @@ export default class MarketPage extends React.Component {
                 <div className="market-r">
                     <MarketRPage/>
                 </div>
+
+                <PopComponent
+                    closeCallbackFun={ () => this.closeCallbackFun() }
+                    isShow={ this.state.isNewMarketPop }>
+                    <div onClick={ () => this.closeMarketPopHandle() } className="ui-btn">关闭</div>
+                </PopComponent>
+
             </div>
         );
     }

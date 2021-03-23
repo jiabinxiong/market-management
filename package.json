@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "antd": "^4.13.1",
+    "axios": "^0.21.1",
     "braft-editor": "^2.3.9",
     "react": "^17.0.1",
     "react-amap": "^1.2.8",
