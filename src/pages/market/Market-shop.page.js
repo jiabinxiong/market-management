@@ -2,9 +2,6 @@ import React from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Upload } from 'antd'; 
 
-import DialogComponent from '../../components/dialog/Dialog.component';
-
-import '../../less/market/marketShopDialog.less';
 
 import testImage1 from '../../images/test-1.jpg';
 
@@ -106,52 +103,52 @@ export default class MarketShopPage extends React.Component {
                     </div>
                 </div>
 
-                {
-                    this.state.dialogShopShow ? <DialogComponent
-                        show={this.state.dialogShopShow}
-                        callbackFun={ () => this.dialogCallbackFun() }
-                    >
-                        <div className="market-shop-dialog">
-                            <ul className="ui-ul-form">
-                                <li className="ui-li-form ">
-                                    <label className="ui-li-label-form">名 &nbsp; &nbsp;&nbsp; 称:</label>
-                                    <div className="ui-li-block-form">
-                                        <div className="ui-li-block-ipt-form">
-                                            <div className="ui-li-block-childer-form">
-                                                <input 
-                                                    className="ui-li-form-ipt" 
-                                                    type="text" 
-                                                    placeholder="请输入名称"/>
-                                            </div>
-                                            
-                                        </div>                                                    
-                                        <p className="ui-li-prompt-text-form-ipt">
-                                            <span className="ui-li-prompt-text-l-form-ipt">请输入名称</span>
-                                        </p>                                                
-                                    </div>
-                                </li>
-                                <li className="ui-li-form market-shop-dialog-upload-li">
-                                    <label className="ui-li-label-form">图 &nbsp; &nbsp;&nbsp; 片:</label>
-                                    <div className="ui-li-block-form">
-                                        <div className="ui-li-block-childer-form market-shop-dialog-upload-li-block ">
-                                            <Upload 
-                                                name="file"
-                                                className="ui-upload">
-                                                <div className="icon-block">
-                                                    <div className="info">
-                                                        <span className="icon iconfont icon-add-icon "></span>
-                                                        <span className="text">上传</span>
-                                                    </div>
-                                                </div>                                                        
-                                            </Upload>                                        
-                                        </div>                                    
-                                        <p className="ui-li-prompt-text-form-ipt">请输入用户名</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </DialogComponent> : null
-                }                
+                {/*{*/}
+                {/*    this.state.dialogShopShow ? <DialogComponent*/}
+                {/*        show={this.state.dialogShopShow}*/}
+                {/*        callbackFun={ () => this.dialogCallbackFun() }*/}
+                {/*    >*/}
+                {/*        <div className="market-shop-dialog">*/}
+                {/*            <ul className="ui-ul-form">*/}
+                {/*                <li className="ui-li-form ">*/}
+                {/*                    <label className="ui-li-label-form">名 &nbsp; &nbsp;&nbsp; 称:</label>*/}
+                {/*                    <div className="ui-li-block-form">*/}
+                {/*                        <div className="ui-li-block-ipt-form">*/}
+                {/*                            <div className="ui-li-block-childer-form">*/}
+                {/*                                <input */}
+                {/*                                    className="ui-li-form-ipt" */}
+                {/*                                    type="text" */}
+                {/*                                    placeholder="请输入名称"/>*/}
+                {/*                            </div>*/}
+                {/*                            */}
+                {/*                        </div>                                                    */}
+                {/*                        <p className="ui-li-prompt-text-form-ipt">*/}
+                {/*                            <span className="ui-li-prompt-text-l-form-ipt">请输入名称</span>*/}
+                {/*                        </p>                                                */}
+                {/*                    </div>*/}
+                {/*                </li>*/}
+                {/*                <li className="ui-li-form market-shop-dialog-upload-li">*/}
+                {/*                    <label className="ui-li-label-form">图 &nbsp; &nbsp;&nbsp; 片:</label>*/}
+                {/*                    <div className="ui-li-block-form">*/}
+                {/*                        <div className="ui-li-block-childer-form market-shop-dialog-upload-li-block ">*/}
+                {/*                            <Upload */}
+                {/*                                name="file"*/}
+                {/*                                className="ui-upload">*/}
+                {/*                                <div className="icon-block">*/}
+                {/*                                    <div className="info">*/}
+                {/*                                        <span className="icon iconfont icon-add-icon "></span>*/}
+                {/*                                        <span className="text">上传</span>*/}
+                {/*                                    </div>*/}
+                {/*                                </div>                                                        */}
+                {/*                            </Upload>                                        */}
+                {/*                        </div>                                    */}
+                {/*                        <p className="ui-li-prompt-text-form-ipt">请输入用户名</p>*/}
+                {/*                    </div>*/}
+                {/*                </li>*/}
+                {/*            </ul>*/}
+                {/*        </div>*/}
+                {/*    </DialogComponent> : null*/}
+                {/*}                */}
             </div>
         );
     }

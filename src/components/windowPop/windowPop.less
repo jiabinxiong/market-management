@@ -1,3 +1,5 @@
+@popBorderCCC: #ccc;
+
 .dialog,
 .dialog__overlay {
     width: 100%;
@@ -33,9 +35,8 @@
 }
 
 .dialog__content {
-    width: 500px;
+    min-width: 500px;
     background: #fff;
-    padding: 10px;
     text-align: center;
     position: relative;
     z-index: 5;
@@ -46,15 +47,6 @@
     pointer-events: auto;
 }
 
-/* Content */
-.dialog h2 {
-    margin: 0;
-    font-weight: 400;
-    font-size: 2em;
-    padding: 0 0 2em;
-    margin: 0;
-}
-
 
 .dialog__overlay {
     -webkit-transition-duration: 0.4s;
@@ -62,7 +54,22 @@
 }
 
 .dialog__content {
+    border-radius: 5px;
     // overflow: hidden;
+}
+
+.dialog-center-title {
+    height: 40px;
+    border-bottom: 1px solid @popBorderCCC;
+}
+
+.dialog-center-title {
+    padding: 0 10px;
+    .title-text {
+        float: left;
+        font-size: 16px;
+        line-height:40px;
+    }
 }
 
 .dialog-clear-btn {
@@ -80,6 +87,24 @@
     color: #fff;
     background-color: #272b2c;
     cursor: pointer;
+}
+
+.dialog-center-btn {
+    height: 60px;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+
+    .btn {
+        width: 80px;
+    }
+
+    .btn-l {
+        float: left;
+    }
+
+    .btn-r {
+        float: right;
+    }
 }
 
 .dialog.dialog--open .dialog__content,

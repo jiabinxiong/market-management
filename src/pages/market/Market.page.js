@@ -8,35 +8,76 @@ import '../../less/market/market.less';
 
 const { Option } = Select;
 
-import PopComponent from '../../components/pop/Pop.component';
+import MarketNewPopPage from './MarketNewPop.page';
+
+import { WindowPopComponent } from '../../components';
 
 export default class MarketPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isNewMarketPop: false
+            isNewMarketPop: false,
+            visible: true,
+            determineSuccess: false,
+            nameIpt: '11'
         };
     }
     componentDidMount() {
         
     }
 
-    newMarketPopHandle() {
+    showPopHandle() {
         this.setState({
-            isNewMarketPop: true
+            visible: true
+        })
+    }
+
+    popCloseCallback() {
+        console.log('close callback');
+        this.setState({
+            visible: false
         });
     }
 
-    closeMarketPopHandle() {
+    popDetermineCallback(msg) {
+        // console.log(msg.close());
+        // this.setState({
+        //     determineSuccess: true
+        // });
+
+        if( this.state.nameIpt.length > 0) {
+            msg.close('determine', () => {
+                this.setState({
+                    visible: false
+                });
+            });
+        } else {
+        }
+
+        // fetch('https://api.github.com/users')
+        //     .then(res => res.json())
+        //     .then(data => {
+        //         console.log(data.length)
+        //
+        //         this.setState({
+        //             // determineSuccess: true,
+        //             visible: false
+        //         })
+        //
+        //         msg.close();
+        //     })
+    }
+
+    searchHandle() {
         this.setState({
-            isNewMarketPop: false
+            visible: true
         });
     }
 
-    closeCallbackFun() {
-        // console.log('a');
+    nameIptChange(e) {
+        console.log(e.target.value);
         this.setState({
-            isNewMarketPop: false
+            nameIpt: e.target.value
         });
     }
 
@@ -46,7 +87,7 @@ export default class MarketPage extends React.Component {
                 <div className="market-l">
                     <div className="market-l-t">
                         <div className="market-search">
-                            <div className="btn ui-btn">
+                            <div className="btn ui-btn" onClick={ () => this.searchHandle() }>
                                 搜索
                             </div>
                             <div className="market-search-ipt">
@@ -82,8 +123,8 @@ export default class MarketPage extends React.Component {
                     <div className="market-list">
                         <div className="market-list-none">
                           还没有市场场，<span
-                                onClick={ () => this.newMarketPopHandle() }
-                                className="new-btn">去创建吧!{this.state.isNewMarketPop ? 'haha' : 'la'}</span>
+                                onClick={ () => this.showPopHandle() }
+                                className="new-btn">去创建吧!</span>
                         </div>
                         {/*<PerfectScrollbar>*/}
                         {/*    <ul className="market-list-ul">                                    */}
@@ -109,11 +150,26 @@ export default class MarketPage extends React.Component {
                     <MarketRPage/>
                 </div>
 
-                <PopComponent
-                    closeCallbackFun={ () => this.closeCallbackFun() }
-                    isShow={ this.state.isNewMarketPop }>
-                    <div onClick={ () => this.closeMarketPopHandle() } className="ui-btn">关闭</div>
-                </PopComponent>
+                {
+                    this.state.visible ? <WindowPopComponent
+                        visible={ this.state.visible }
+                        determineSuccess={this.state.determineSuccess}
+                        popDetermineCallback={(msg) => this.popDetermineCallback(msg)}
+                        popCloseCallback={ () => this.popCloseCallback() }>
+                        <div>
+                            <div>{ this.state.nameIpt.length > 0 ? 'haha' : ' no text ' }</div>
+                            <input onChange={ e => this.nameIptChange(e) }/>
+                        </div>
+                    </WindowPopComponent> :null
+                }
+
+
+                {/*<MarketNewPopPage/>*/}
+                {/*<PopComponent*/}
+                {/*    callbackFun={ () => this.popCallbackFun() }*/}
+                {/*    isShow={ this.state.isNewMarketPop }>*/}
+                {/*    <div onClick={ () => this.closeMarketPopHandle() } className="ui-btn">关闭</div>*/}
+                {/*</PopComponent>*/}
 
             </div>
         );
