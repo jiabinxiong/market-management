@@ -2,26 +2,21 @@ const WindowPopAPI = {
     openCloseHandle: null,
     visible: false,
     popCloseCallback: null,
-    popDetermineCallback: null,
-    determineSuccess: false,
+    popDetermineCallback: null,    
     showAnimation: true,
     showAnimationTime: null,
     close: function(isStyle, callback) {
-        const _this = this;
-        console.log('1');
+        const _this = this;        
         this.showAnimation = false;
-        if(this.openCloseHandle) {
-            console.log('2');
+        if(this.openCloseHandle) {            
             this.openCloseHandle({
                 showAnimation: false
             });
         }
 
-        this.showAnimationTime = setTimeout(() => {
-            console.log('3');
+        this.showAnimationTime = setTimeout(() => {            
             this.visible = false;
-            if(this.openCloseHandle) {
-                console.log('4');
+            if(this.openCloseHandle) {                
                 this.openCloseHandle({
                     visible: false,
                     showAnimation: false
@@ -29,12 +24,10 @@ const WindowPopAPI = {
             }
 
             if(isStyle === 'cancel') {
-                console.log('cancel');
                 if(_this.popCloseCallback) {
                     _this.popCloseCallback();
                 }
             } else if (isStyle === 'determine') {
-                console.log('determine');
                 callback();
             }
 
@@ -47,18 +40,16 @@ const WindowPopAPI = {
             this.popDetermineCallback(this);
         }
     },
-    subscribeToFriendStatus: function(openCloseHandle, popCloseCallback, popDetermineCallback, determineSuccess) {
+    subscribeToFriendStatus: function(openCloseHandle, popCloseCallback, popDetermineCallback, ) {
         this.openCloseHandle = openCloseHandle;
         this.popCloseCallback = popCloseCallback;
-        this.popDetermineCallback = popDetermineCallback;
-        this.determineSuccess = determineSuccess;
+        this.popDetermineCallback = popDetermineCallback;  
     },
     unsubscribeFromFriendStatus: function(openCloseHandle, popCloseCallback, determineSuccess) {
 
         this.openCloseHandle = null;
         this.popCloseCallback = null;
         this.popDetermineCallback = null;
-        this.determineSuccess = false;
         clearTimeout(this.showAnimationTime);
     }
 };

@@ -13,9 +13,9 @@ module.exports = {
         progress: true,
         open: true,
         port: 8000,
-        host: '192.168.1.10',
+        host: 'localhost',
         proxy: {
-            '/api': 'http://localhost:3000'
+            '/api': 'http://192.168.1.10:3000'
         }
     },
     module: {

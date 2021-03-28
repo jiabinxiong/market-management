@@ -1,5 +1,7 @@
 import WindowPopAPI from './WindowPopAPI';
+import MarketAPI from './MarketAPI';
 
 export {
-    WindowPopAPI
+    WindowPopAPI,
+    MarketAPI
 }

@@ -1,13 +1,13 @@
 import axios from "axios";
 const http = axios.create();
 
-http.defaults.headers['Content-type'] = 'application/x-www-form-urlencoded; charset=utf-8';
+http.defaults.headers['Content-type'] = 'application/json; charset=utf-8';
 
-http.defaults.transformRequest = [
-    (data) => {
-        if(data) return JSON.stringify(data);
-    }
-];
+// http.defaults.transformRequest = [
+//     (data) => {
+//         if(data) return JSON.stringify(data);
+//     }
+// ];
 
 http.defaults.timeout = 10000;
 
