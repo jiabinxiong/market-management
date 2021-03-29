@@ -1,5 +1,6 @@
 import React from 'react';
 import {Carousel, Upload} from "antd";
+import { connect } from 'react-redux';
 import {Map} from "react-amap";
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
@@ -16,7 +17,7 @@ const contentStyle = {
 
 import {IptComponent, WindowPopComponent} from '../../components';
 
-export default function MarketNewPopPage(props) {
+function MarketNewPopPage(props) {
     return (
         <WindowPopComponent
             titleText="创建市场"
@@ -215,3 +216,6 @@ export default function MarketNewPopPage(props) {
     );
 }
 
+export default connect(
+
+)(MarketNewPopPage);

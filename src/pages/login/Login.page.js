@@ -1,21 +1,48 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
+import { isLoginPromptModule } from '../../moduls';
 import { BtnComponent, IptComponent } from '../../components';
-
+import { userConstant } from '../../constants';
 import { userAction } from '../../redux/actions';
-import { userServer } from '../../service';
+import { authService } from '../../service';
+import authRouter from '../../router/authRouter';
 
 function LoginPage(props) {
+    if(authRouter()) {
+        return authRouter();
+    }
+
     const loginHandle = () => {
-        props.visibleLoginBtnAction(true);
-        userServer.login({
-            ...props.loginReducer,
-            role: 0
-        }).then((data) => {
-            props.visibleLoginBtnAction(false);
-        });
+        if(props.loginReducer.name.length === 0) {
+            props.isLoginPrompAction({
+                ...isLoginPromptModule,
+                namePrompt: userConstant.loginRegister.nameNull
+            });
+        } else if (props.loginReducer.name.length < 6) {
+            props.isLoginPrompAction({
+                ...isLoginPromptModule,
+                namePrompt: userConstant.loginRegister.nameLength
+            });
+        } else if (props.loginReducer.psw.length === 0) {
+            props.isLoginPrompAction({
+                ...isLoginPromptModule,
+                pswPrompt: userConstant.loginRegister.pswNull
+            });
+        }  else if (props.loginReducer.psw.length < 6) {
+            props.isLoginPrompAction({
+                ...isLoginPromptModule,
+                pswPrompt: userConstant.loginRegister.pswLength
+            });
+        } else {
+            props.visibleLoginBtnAction(true);
+            props.isLoginPrompAction({
+                ...isLoginPromptModule
+            });
+
+            authService.login(props, userConstant);
+        }
+
     }
 
     const namePswChange = (e, type) => {
@@ -51,7 +78,9 @@ function LoginPage(props) {
                                     </div>
                                 </div>
                                 <p className="prompt-text-form-ipt ui-li-prompt-text-form-ipt">
-                                    <span className="ui-li-prompt-text-l-form-ipt">请输入名称</span>
+                                    <span className="ui-li-prompt-text-l-form-ipt">
+                                        { props.isLoginPromptReducer.namePrompt }
+                                    </span>
                                 </p>
                             </div>
                         </li>
@@ -72,7 +101,9 @@ function LoginPage(props) {
                                     </div>
                                 </div>
                                 <p className="prompt-text-form-ipt ui-li-prompt-text-form-ipt">
-                                    <span className="ui-li-prompt-text-l-form-ipt">请输入密码</span>
+                                    <span className="ui-li-prompt-text-l-form-ipt">
+                                        { props.isLoginPromptReducer.pswPrompt }
+                                    </span>
                                 </p>
                             </div>
                         </li>
@@ -90,13 +121,16 @@ function LoginPage(props) {
     );
 }
 
+
 export default connect(
     data => ({
         loginReducer: data.loginReducer,
+        isLoginPromptReducer: data.isLoginPromptReducer,
         visibleLoginBtnReducer: data.visibleLoginBtnReducer
     }),
     {
         loginAction: userAction.setLogin,
+        isLoginPrompAction: userAction.isLoginPrompt,
         visibleLoginBtnAction: userAction.visibleLoginBtn
     }
 )(LoginPage);

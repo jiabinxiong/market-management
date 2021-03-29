@@ -1,18 +1,14 @@
 import axios from "axios";
+import authService from './auth.service';
 const http = axios.create();
 
 http.defaults.headers['Content-type'] = 'application/json; charset=utf-8';
-
-// http.defaults.transformRequest = [
-//     (data) => {
-//         if(data) return JSON.stringify(data);
-//     }
-// ];
 
 http.defaults.timeout = 10000;
 
 // 添加请求拦截器
 http.interceptors.request.use(function (config) {
+    config = authService.setTokenToHeader(config);
     return config;
 }, function(error) {
     return Promise.reject(error);
@@ -98,5 +94,6 @@ export default {
     get,
     post,
     del,
-    getBlob
+    getBlob,
+    http
 }

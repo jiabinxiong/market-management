@@ -3,7 +3,7 @@ import { Select } from 'antd';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import MarketRPage from './MarketR.page';
-
+import MarketListPage from './MarketList.page';
 
 const { Option } = Select;
 
@@ -81,11 +81,12 @@ export default function MarketPage() {
 
                 </div>
                 <div className="market-list">
-                    <div className="market-list-none">
-                        还没有市场，<span
-                        onClick={ () => MarketAPI.newMarket() }
-                        className="new-btn">去创建吧!</span>
-                    </div>
+                    <MarketListPage/>
+                    {/*<div className="market-list-none">*/}
+                    {/*    还没有市场，<span*/}
+                    {/*    onClick={ () => MarketAPI.newMarket() }*/}
+                    {/*    className="new-btn">去创建吧!</span>*/}
+                    {/*</div>*/}
 
                 </div>
             </div>

@@ -1,5 +1,6 @@
-import { loginModule } from './user/user.module';
+import { loginModule, isLoginPromptModule } from './user/user.module';
+import { newMarketModule } from './market/newMarket';
 
 export {
-    loginModule
+    loginModule, isLoginPromptModule, newMarketModule
 }

@@ -1,6 +1,8 @@
 import administrationService from './administration.service';
-import userServer from './user.service';
+import userService from './user.service';
+import marketService from './market.service';
+import authService from './auth.service';
 
 export {
-    administrationService, userServer
+    administrationService, userService, marketService, authService
 }
