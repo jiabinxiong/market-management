@@ -3,4 +3,9 @@ export const marketActionType = {
     ADD:                                                'add',
     DELETE:                                             'delete',
     UPDATE:                                             'update',
+    DIALOG:                                             'dialog',
+    LIST_LOADING:                                       'listLoading',
+    DIALOG_TYPE:                                        'dialogType',
+    FILTER_LIST:                                        'filterList',
+    OPERATE_TYPE:                                       'operateType'
 };

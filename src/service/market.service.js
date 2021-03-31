@@ -15,11 +15,11 @@ class MarketService {
         return get(`${HTTP_SERVER}/api/management/searchMarket`, {});
     }
 
-    deleteMarket(data) {
-        return post(`${HTTP_SERVER}/api/management/deleteMarket`, {});
+    delete(data = {}) {
+        return post(`${HTTP_SERVER}/api/management/deleteMarket`, data);
     }
 
-    updateMarket(data) {
+    update(data) {
         return post(`${HTTP_SERVER}/api/management/updateMarket`, {});
     }
 }

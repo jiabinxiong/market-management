@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Select } from 'antd';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import MarketRPage from './MarketR.page';
 import MarketListPage from './MarketList.page';
 
-const { Option } = Select;
-
+import MarketLPage from './MarketL.page';
 import MarketNewPopPage from './MarketNewPop.page';
 
 import { WindowPopComponent } from '../../components';
@@ -45,50 +43,11 @@ export default function MarketPage() {
     return (
         <div className="market">
             <div className="market-l">
-                <div className="market-l-t">
-                    <div className="market-search">
-                        <div className="btn ui-btn">
-                            搜索
-                        </div>
-                        <div className="market-search-ipt">
-                            <input type="text" className="ipt" placeholder="搜索蔬果市场名称"/>
-                        </div>
-                    </div>
-                    <div className="market-l-t-city">
-                        <ul className="ul">
-                            <li className="li">
-                                <Select className="select" defaultValue="lucy">
-                                    <Option value="jack">Jack</Option>
-                                    <Option value="lucy">Lucy</Option>
-                                    <Option value="disabled" disabled>
-                                        Disabled
-                                    </Option>
-                                    <Option value="Yiminghe">yiminghe</Option>
-                                </Select>
-                            </li>
-                            <li className="li">
-                                <Select className="select" defaultValue="lucy">
-                                    <Option value="jack">Jack</Option>
-                                    <Option value="lucy">Lucy</Option>
-                                    <Option value="disabled" disabled>
-                                        Disabled
-                                    </Option>
-                                    <Option value="Yiminghe">yiminghe</Option>
-                                </Select>
-                            </li>
-                        </ul>
-                    </div>
+                <MarketLPage/>
 
-                </div>
-                <div className="market-list">
-                    <MarketListPage/>
-                    {/*<div className="market-list-none">*/}
-                    {/*    还没有市场，<span*/}
-                    {/*    onClick={ () => MarketAPI.newMarket() }*/}
-                    {/*    className="new-btn">去创建吧!</span>*/}
-                    {/*</div>*/}
-
-                </div>
+                {/*<div className="market-list">*/}
+                {/*    <MarketListPage/>*/}
+                {/*</div>*/}
             </div>
 
             <div className="market-r">

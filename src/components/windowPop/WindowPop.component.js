@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactDom from 'react-dom';
 
-import './windowPop.less';
+// import './windowPop.less';
 import { WindowPopAPI } from '../../effectAPI';
 
 /*

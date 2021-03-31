@@ -1,0 +1,204 @@
+@popBorderCCC: #ccc;
+
+.dialog,
+.dialog__overlay {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.dialog {
+    position: fixed;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.dialog__overlay {
+    position: absolute;
+    z-index: 1;
+    background: rgba(55, 58, 71, 0.9);
+    opacity: 0;
+    -webkit-transition: opacity 0.3s;
+    transition: opacity 0.3s;
+    -webkit-backface-visibility: hidden;
+}
+
+.dialog--open .dialog__overlay {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.dialog__content {
+    min-width: 500px;
+    background: #fff;
+    position: relative;
+    z-index: 5;
+    opacity: 0;
+}
+
+.dialog--open .dialog__content {
+    pointer-events: auto;
+}
+
+
+.dialog__overlay {
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+}
+
+.dialog__content {
+    border-radius: 5px;
+    // overflow: hidden;
+}
+
+.dialog-center-title {
+    height: 40px;
+    border-bottom: 1px solid @popBorderCCC;
+}
+
+.dialog-center-title {
+    padding: 0 10px;
+    .title-text {
+        float: left;
+        margin-bottom: 0;
+        font-size: 16px;
+        line-height:40px;
+    }
+}
+
+.dialog-clear-btn {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    transform: rotate(45deg);
+    line-height: 30px;
+    text-align: center;
+    border-radius: 15px;
+    color: #fff;
+    background-color: #272b2c;
+    cursor: pointer;
+}
+
+.dialog-center-btn {
+    height: 60px;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+
+    .btn {
+        width: 80px;
+    }
+
+    .btn-l {
+        float: left;
+    }
+
+    .btn-r {
+        float: right;
+    }
+}
+
+.dialog.dialog--open .dialog__content,
+.dialog.dialog--close .dialog__content {
+    -webkit-animation-duration: 0.4s;
+    animation-duration: 0.4s;
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+}
+
+.dialog.dialog--open .dialog__content {
+    -webkit-animation-name: anim-open;
+    animation-name: anim-open;
+    -webkit-animation-timing-function: cubic-bezier(0.7,0,0.3,1);
+    animation-timing-function: cubic-bezier(0.7,0,0.3,1);
+}
+
+.dialog.dialog--close .dialog__content {
+    -webkit-animation-name: anim-close;
+    animation-name: anim-close;
+}
+
+.dialog.dialog--open h2,
+.dialog.dialog--open button {
+    -webkit-animation: anim-elem 0.4s both;
+    animation: anim-elem 0.4s both;
+}
+
+.dialog.dialog--open h2 {
+    -webkit-animation-delay: 0.25s;
+    animation-delay: 0.25s;
+}
+
+.dialog.dialog--open button {
+    -webkit-animation-delay: 0.15s;
+    animation-delay: 0.15s;
+}
+
+.dialog__content.dialog-prompt {
+    min-width: 400px;
+
+    .prompt-cnt {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .dialog-center-btn {
+        padding: 0;
+        height: 40px;
+
+        .btn {
+            width: 50%;
+            border-radius: 0;
+        }
+
+        .ui-cancel-btn {
+            border-radius: 0 0 0 5px;
+        }
+
+        .ui-delete-btn {
+            border-radius: 0 0 5px 0;
+        }
+    }
+}
+
+
+@-webkit-keyframes anim-open {
+    0% { opacity: 0; -webkit-transform: translate3d(0, -400px, 0); }
+    100% { opacity: 1; -webkit-transform: translate3d(0, 0, 0); }
+}
+
+@keyframes anim-open {
+    0% { opacity: 0; -webkit-transform: translate3d(0, -400px, 0); transform: translate3d(0, -400px, 0); }
+    100% { opacity: 1; -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); }
+}
+
+@-webkit-keyframes anim-close {
+    0% { opacity: 1; -webkit-transform: translate3d(0, 0, 0); }
+    100% { opacity: 0; -webkit-transform: translate3d(0, 100px, 0); }
+}
+
+@keyframes anim-close {
+    0% { opacity: 1; -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); }
+    100% { opacity: 0; -webkit-transform: translate3d(0, 100px, 0); transform: translate3d(0, 100px, 0); }
+}
+
+/* Inner elements animations */
+
+@-webkit-keyframes anim-elem {
+    0% { opacity: 0; -webkit-transform: translate3d(0, -100px, 0); }
+    100% { opacity: 1; -webkit-transform: translate3d(0, 0, 0); }
+}
+
+@keyframes anim-elem {
+    0% { opacity: 0; -webkit-transform: translate3d(0, -100px, 0); transform: translate3d(0, -100px, 0); }
+    100% { opacity: 1; -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); }
+}

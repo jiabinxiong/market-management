@@ -26,7 +26,13 @@
 
         .btn {
             float: right;
-            width: 60px;
+            width: 46px;
+            height: 30px;
+            line-height: 30px;
+        }
+
+        .new-btn {
+            margin-left: 10px;
         }
     }
 }
@@ -51,7 +57,7 @@
 }
 
 .market-search-ipt {
-    margin-right: 70px;
+    margin-right: 110px;
     background-color: #fff;
     border-radius: 5px;
     padding: 0 5px;
@@ -78,24 +84,12 @@
     .li {
         height: 70px;
         margin-bottom: 10px;
+        border-radius: 5px;
         background-color: #272b2c;
 
         .l {
-            float: left;
-            width: 50px;
-            height: 70px;
-
-            .img {
-                width: 40px;
-                height: 40px;
-                margin: 5px 0 0 5px;
-                border-radius: 20px;
-                background-color: #fff;
-            }
-        }
-
-        .r {
-            padding: 5px 4px 0 0;
+            padding: 5px 55px 5px 5px;
+            cursor: pointer;
             .sub-title {
                 margin: 0;
                 line-height: 18px;
@@ -113,6 +107,30 @@
                 margin: 0;
                 font-size: 12px;
                 color: #fff;
+            }
+        }
+
+        .r {
+            float: right;
+            width: 50px;
+            height: 70px;
+
+            .btn {
+                height: 35px;
+                line-height: 35px;
+                text-align: center;
+                cursor: pointer;
+                color: #fff;
+            }
+
+            .delete-btn {
+                border-radius: 0 5px 0 0;
+                background-color: rgba(66, 174, 239, 0.6);
+            }
+
+            .update-btn {
+                border-radius: 0 0 5px 0;
+                background-color: rgba(162, 10, 0, 0.6);
             }
         }
     }

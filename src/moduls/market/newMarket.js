@@ -9,5 +9,6 @@ export const newMarketModule = {
     openTime: '',
     phone: '',
     http: '',
-    address: ''
+    address: '',
+    _id: ''
 };
