@@ -9,7 +9,7 @@ import { LoadingComponent, TextareaComponent } from '../../components';
 
 import { MarketLAPI } from '../../effectAPI';
 import { marketAction } from '../../redux/actions';
-import { DIALOG_TYPE, MARKET_OPERATE_TYPE } from '../../constants';
+import { DIALOG_TYPE, MARKET_OPERATE_TYPE, MARKET_CHANGE_TYPE } from '../../constants';
 
 const contentStyle = {
     height: '160px',
@@ -140,7 +140,9 @@ function MarketLPage(props) {
                                             <IptComponent
                                                 className="ui-li-form-ipt"
                                                 type="text"
-                                                placeholder="请输入用户名"
+                                                onChange={ e => MarketLAPI.newChange(e, MARKET_CHANGE_TYPE.NAME) }
+                                                value={ props.marketNewUpdateChangeReducer[MARKET_CHANGE_TYPE.NAME] }
+                                                placeholder="请输入市场名称"
                                             />
                                         </div>
                                         <p className="ui-li-prompt-text-form-ipt">
@@ -189,6 +191,8 @@ function MarketLPage(props) {
                                             <TextareaComponent
                                                 placeholder="请输入市场简介"
                                                 className="ui-textarea"
+                                                onChange={ e => MarketLAPI.newChange(e, MARKET_CHANGE_TYPE.SUMMARY) }
+                                                value={ props.marketNewUpdateChangeReducer[MARKET_CHANGE_TYPE.SUMMARY] }
                                             />
                                         </div>
                                         <p className="ui-li-prompt-text-form-ipt">
@@ -205,6 +209,8 @@ function MarketLPage(props) {
                                             <TextareaComponent
                                                 placeholder="请输入市场简介"
                                                 className="ui-textarea"
+                                                onChange={ e => MarketLAPI.newChange(e, MARKET_CHANGE_TYPE.HANG_OUT) }
+                                                value={ props.marketNewUpdateChangeReducer[MARKET_CHANGE_TYPE.HANG_OUT] }
                                             />
                                         </div>
                                         <p className="ui-li-prompt-text-form-ipt">
@@ -222,6 +228,8 @@ function MarketLPage(props) {
                                             <TextareaComponent
                                                 placeholder="请输入乘坐公交路线"
                                                 className="ui-textarea"
+                                                onChange={ e => MarketLAPI.newChange(e, MARKET_CHANGE_TYPE.BUS) }
+                                                value={ props.marketNewUpdateChangeReducer[MARKET_CHANGE_TYPE.BUS] }
                                             />
                                         </div>
                                         <p className="ui-li-prompt-text-form-ipt">
@@ -240,6 +248,8 @@ function MarketLPage(props) {
                                             <TextareaComponent
                                                 placeholder="请输入乘坐地铁路线"
                                                 className="ui-textarea"
+                                                onChange={ e => MarketLAPI.newChange(e, MARKET_CHANGE_TYPE.SUBWAY) }
+                                                value={ props.marketNewUpdateChangeReducer[MARKET_CHANGE_TYPE.SUBWAY] }
                                             />
                                         </div>
                                         <p className="ui-li-prompt-text-form-ipt">
@@ -258,6 +268,8 @@ function MarketLPage(props) {
                                             <TextareaComponent
                                                 placeholder="请输入开放时间"
                                                 className="ui-textarea"
+                                                onChange={ e => MarketLAPI.newChange(e, MARKET_CHANGE_TYPE.OPEN_TIME) }
+                                                value={ props.marketNewUpdateChangeReducer[MARKET_CHANGE_TYPE.OPEN_TIME] }
                                             />
                                         </div>
                                         <p className="ui-li-prompt-text-form-ipt">
@@ -279,6 +291,8 @@ function MarketLPage(props) {
                                                 className="ui-li-form-ipt"
                                                 type="text"
                                                 placeholder="请输入电话号码"
+                                                onChange={ e => MarketLAPI.newChange(e, MARKET_CHANGE_TYPE.PHONE) }
+                                                value={ props.marketNewUpdateChangeReducer[MARKET_CHANGE_TYPE.PHONE] }
                                             />
                                         </div>
                                         <p className="ui-li-prompt-text-form-ipt">
@@ -299,6 +313,8 @@ function MarketLPage(props) {
                                                 className="ui-li-form-ipt"
                                                 type="text"
                                                 placeholder="请输入网址"
+                                                onChange={ e => MarketLAPI.newChange(e, MARKET_CHANGE_TYPE.HTTP) }
+                                                value={ props.marketNewUpdateChangeReducer[MARKET_CHANGE_TYPE.HTTP] }
                                             />
                                         </div>
                                         <p className="ui-li-prompt-text-form-ipt">
@@ -319,6 +335,8 @@ function MarketLPage(props) {
                                                 className="ui-li-form-ipt"
                                                 type="text"
                                                 placeholder="请输入地址"
+                                                onChange={ e => MarketLAPI.newChange(e, MARKET_CHANGE_TYPE.ADDRESS) }
+                                                value={ props.marketNewUpdateChangeReducer[MARKET_CHANGE_TYPE.ADDRESS] }
                                             />
                                         </div>
                                         <p className="ui-li-prompt-text-form-ipt">
@@ -344,7 +362,8 @@ export default connect(
         marketListLoadingReducer: data.marketListLoadingReducer,
         marketDialogTypeReducer: data.marketDialogTypeReducer,
         marketListFilterReducer: data.marketListFilterReducer,
-        marketOperateTypeReducer: data.marketOperateTypeReducer
+        marketOperateTypeReducer: data.marketOperateTypeReducer,
+        marketNewUpdateChangeReducer: data.marketNewUpdateChangeReducer
     }), {
         marketDialogAction: marketAction.dialog,
         marketQueryAction: marketAction.query,
@@ -354,6 +373,8 @@ export default connect(
         marketListLoadingAction: marketAction.listLogin,
         marketDialogTypeAction: marketAction.dialogType,
         marketListFilterAction: marketAction.filterList,
-        marketOperateTypeAction: marketAction.operateType
+        marketOperateTypeAction: marketAction.operateType,
+        marketNewChangeAction: marketAction.newChange,
+        marketEmptyChangeAction: marketAction.emptyChange
     }
 )(MarketLPage);

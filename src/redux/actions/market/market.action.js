@@ -9,5 +9,8 @@ export const marketAction = {
     listLogin:                                  data => ({ type: marketActionType.LIST_LOADING, data }),
     dialogType:                                 data => ({ type: marketActionType.DIALOG_TYPE, data }),
     filterList:                                 data => ({ type: marketActionType.FILTER_LIST, data }),
-    operateType:                                data => ({ type: marketActionType.OPERATE_TYPE, data })
+    operateType:                                data => ({ type: marketActionType.OPERATE_TYPE, data }),
+    newChange:                                  data => ({ type: marketActionType.NEW_CHANGE, data }),
+    updateChange:                               data => ({ type: marketActionType.UPDATE_CHANGE, data }),
+    emptyChange:                                data => ({ type: marketActionType.EMPTY_CHANGE, data })
 };

@@ -4,7 +4,7 @@ import { HTTP_SERVER } from '../constants/http.constant';
 
 class MarketService {
     add(data) {
-        return post(`${HTTP_SERVER}/api/management/newMarket`, {});
+        return post(`${HTTP_SERVER}/api/management/newMarket`, data);
     }
 
     query(data = {}) {
