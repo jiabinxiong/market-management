@@ -1,22 +1,13 @@
 import React from 'react';
-import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import MarketPage from '../market/Market.page';
 import MenuComponent from '../../components/menu/Menu.component';
+import NavPage from '../nav/Nav.page';
 
 export default function HomePage () {
     return (
         <div className="home">
-            <div className="home-l nav-l">
-                <div className="logo">
-
-                </div>
-                <div className="menu">
-                    <PerfectScrollbar>
-                        <MenuComponent/>
-                    </PerfectScrollbar>
-                </div>
-            </div>
+            <NavPage/>
             <div className="home-r">
                 <div className="home-t">
                     asdfas

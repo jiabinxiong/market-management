@@ -1,6 +1,6 @@
 import { marketActionType } from '../../actionType';
 import { DIALOG_TYPE, MARKET_OPERATE_TYPE } from '../../../constants';
-import { newMarketModule } from '../../../moduls';
+import { newMarketModule, marketNewPromptModule } from '../../../moduls';
 
 function marketReducer(state = [], action) {
     switch(action.type) {
@@ -78,6 +78,36 @@ function marketOperateTypeReducer(state = MARKET_OPERATE_TYPE.DELETE, action) {
     }
 }
 
+function marketCoverUploadReducer(state = [], action) {
+    switch(action.type) {
+        case marketActionType.ADD_COVER:
+            const copyCoverAdd = JSON.parse(JSON.stringify(state));
+            copyCoverAdd.push(action.data);
+            return copyCoverAdd;
+        case marketActionType.DELETE_COVER:
+            const copyCoverDelete = JSON.parse(JSON.stringify(state));
+            copyCoverDelete.splice(action.data, 1)
+            return copyCoverDelete;
+        case marketActionType.EMPTY_CHANGE:
+            return action.data;
+        default:
+            return state;
+    }
+}
+
+function marketNewPromptReducer(state = marketNewPromptModule, action) {
+    switch(action.type) {
+        case marketActionType.IS_NEW_PROMPT:
+            const copyPrompt = JSON.parse(JSON.stringify(state));
+            return {
+                ...copyPrompt,
+                ...action.data,
+            };
+        default:
+            return state;
+    }
+}
+
 export {
     marketReducer,
     marketNewDialogReducer,
@@ -85,5 +115,7 @@ export {
     marketDialogTypeReducer,
     marketListFilterReducer,
     marketOperateTypeReducer,
-    marketNewUpdateChangeReducer
+    marketNewUpdateChangeReducer,
+    marketCoverUploadReducer,
+    marketNewPromptReducer
 }

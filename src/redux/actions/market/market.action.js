@@ -12,5 +12,9 @@ export const marketAction = {
     operateType:                                data => ({ type: marketActionType.OPERATE_TYPE, data }),
     newChange:                                  data => ({ type: marketActionType.NEW_CHANGE, data }),
     updateChange:                               data => ({ type: marketActionType.UPDATE_CHANGE, data }),
-    emptyChange:                                data => ({ type: marketActionType.EMPTY_CHANGE, data })
+    emptyChange:                                data => ({ type: marketActionType.EMPTY_CHANGE, data }),
+    addCover:                                   data => ({ type: marketActionType.ADD_COVER, data }),
+    deleteCover:                                data => ({ type: marketActionType.DELETE_COVER, data }),
+    emptyCover:                                 data => ({ type: marketActionType.EMPTY_CHANGE, data }),
+    isNewPrompt:                                data => ({ type: marketActionType.IS_NEW_PROMPT, data })
 };

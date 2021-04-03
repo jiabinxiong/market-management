@@ -1,7 +1,7 @@
 export const newMarketModule = {
     name: '',
-    province: [],
-    cover: '',
+    administration: [],
+    cover: [],
     summary: '',
     hangOut: '',
     bus: '',
@@ -11,3 +11,17 @@ export const newMarketModule = {
     http: '',
     address: ''
 };
+
+export const marketNewPromptModule = {
+    name: '',
+    administration: '',
+    cover: '',
+    summary: '',
+    hangOut: '',
+    bus: '',
+    subway: '',
+    openTime: '',
+    phone: '',
+    http: '',
+    address: ''
+}
