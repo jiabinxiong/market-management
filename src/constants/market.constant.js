@@ -16,7 +16,13 @@ export const MARKET_CHANGE_TYPE = {
     PHONE: 'phone',
     HTTP: 'http',
     ADDRESS: 'address'
-}
+};
+
+export const MARKET_DIALOG_TYPE = {
+    NEW: 'new',
+    UPDATE: 'update',
+    DELETE: 'delete'
+};
 
 export const MARKET_NEW_PROMP_TYPE = {
     NAME: {
@@ -24,11 +30,13 @@ export const MARKET_NEW_PROMP_TYPE = {
         MAX_LENGTH: '市场名称不能超过30个字'
     },
     PROVINCE: {
-        NULL: '请选择区域'
+        NULL: '请选择省/直辖市',
+        CITY_NULL: '请选择市',
+        COUNTY_NULL: '请选择县/街道'
     },
     COVER: {
         NULL: '市场封面不能为空',
-        MAX_LENGTH: '市场封面个数不能超过4张'
+        MAX_LENGTH: '市场封面个数不能超过5张'
     },
     SUMMARY: {
         NULL: '市场简介不能为空',

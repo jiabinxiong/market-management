@@ -8,7 +8,7 @@ import ReactDom from "react-dom";
 * */
 
 function DialogComponent(props) {
-    const {type='pop'} = props.props;
+    const {type='pop', lBtnText='取消', rBtnText='确定'} = props.props;
 
     const [show, setShow] = useState(props.props.show);
     function dialogStatusHandle(status) {
@@ -56,10 +56,10 @@ function DialogComponent(props) {
                         <div className="dialog-center-btn">
                             <div
                                 onClick={ () => DialogAPI.close() }
-                                className="btn btn-l ui-btn ui-cancel-btn">取消</div>
+                                className="btn btn-l ui-btn ui-cancel-btn">{ lBtnText }</div>
                             <div
                                 onClick={ () => DialogAPI.determine() }
-                                className={`btn btn-r ${type === 'prompt' ? 'ui-delete-btn' : 'ui-btn' } `}>确定</div>
+                                className={`btn btn-r ${type === 'prompt' ? 'ui-delete-btn' : 'ui-btn' } `}>{rBtnText}</div>
                         </div>
                     </div>
                 </div>

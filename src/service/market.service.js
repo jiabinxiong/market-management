@@ -20,7 +20,7 @@ class MarketService {
     }
 
     update(data) {
-        return post(`${HTTP_SERVER}/api/management/updateMarket`, {});
+        return post(`${HTTP_SERVER}/api/management/updateMarket`, data);
     }
 }
 

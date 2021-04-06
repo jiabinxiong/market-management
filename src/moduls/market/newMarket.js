@@ -1,6 +1,10 @@
 export const newMarketModule = {
     name: '',
-    administration: [],
+    administration: {
+        province: {},
+        city: {},
+        county: {}
+    },
     cover: [],
     summary: '',
     hangOut: '',
@@ -11,6 +15,12 @@ export const newMarketModule = {
     http: '',
     address: ''
 };
+
+export const administrationFilterModule = {
+    province: [],
+    city: [],
+    county: []
+}
 
 export const marketNewPromptModule = {
     name: '',
