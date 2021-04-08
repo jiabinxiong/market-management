@@ -7,7 +7,7 @@ const { Option } = Select;
 import { marketAction } from '../../redux/actions';
 import AddMarketDialogPage from './AddMarketDialog.page';
 
-import { LoadingComponent, Dialog } from '../../components';
+import { LoadingComponent, Dialog, WrapComponent } from '../../components';
 
 import { MarketLAPI } from '../../effectAPI';
 import {MARKET_OPERATE_TYPE} from "../../constants";
@@ -75,16 +75,20 @@ function MarketLPage(props) {
                         <ul className="market-list-ul">
                             {
                                 props.marketListReducer.map((item, index) => {
-                                    return <li className="li" key={item._id}>
+                                    return <li
+                                        onClick={ (e) => MarketLAPI.marketListHandle(e, item) }
+                                        className="li" key={item._id}>
                                         <div className="r">
                                             <div
-                                                onClick={ () => MarketLAPI.deleteMarketHandle(item, MARKET_OPERATE_TYPE.DELETE, index) }
+                                                onClick={ (e) => MarketLAPI.deleteMarketHandle(item, MARKET_OPERATE_TYPE.DELETE, index, e) }
                                                 className="delete-btn btn">
                                                 删除
                                             </div>
                                             <div
                                                 onClick={
-                                                    () => MarketLAPI.dialogUpdateHandle(item, MARKET_OPERATE_TYPE.UPDATE, props.commonCityReducer, props.commonCountyReducer)
+                                                    (e) => MarketLAPI.dialogUpdateHandle(
+                                                        item, MARKET_OPERATE_TYPE.UPDATE, props.commonCityReducer, props.commonCountyReducer, e
+                                                    )
                                                 }
                                                 className="update-btn btn">
                                                 修改
@@ -94,9 +98,11 @@ function MarketLPage(props) {
                                             <h3 className="sub-title">
                                                 {item.name}
                                             </h3>
-                                            <p className="detail-text">
-                                                {item.summary}
-                                            </p>
+                                            <div className="detail-text">
+                                                <WrapComponent
+                                                    text={item.summary}
+                                                />
+                                            </div>
                                         </div>
 
                                     </li>
@@ -141,6 +147,7 @@ export default connect(
         marketListUpdateAction: marketAction.update,
         marketListAddAction: marketAction.add,
         marketListDeleteAction: marketAction.delete,
+        marketListHandleAction: marketAction.listHandle,
         marketNewIptAction: marketAction.newIpt,
         marketUploadChangeAction: marketAction.updateChange,
         marketEmptyChangeAction: marketAction.emptyChange,

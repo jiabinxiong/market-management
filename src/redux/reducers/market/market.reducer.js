@@ -161,9 +161,20 @@ function marketDialogMapReducer(state = marketMapModule, action) {
     }
 }
 
+function marketListHandleReducer(state = newMarketModule, action) {
+    switch (action.type) {
+        case marketActionType.LIST_HANDLE:
+            console.log('a');
+            return action.data;
+        default:
+            return state;
+    }
+}
+
 
 export {
     marketNewPromptReducer, marketListReducer, marketListLoadingReducer, marketDialogTypeReducer,
+    marketListHandleReducer,
     addMarketDialogReducer, administrationSelectReducer, marketNewIptReducer, marketDialogMapReducer
 }
 

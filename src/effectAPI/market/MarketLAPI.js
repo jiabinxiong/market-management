@@ -130,7 +130,8 @@ const MarketLAPI = {
         this.props.marketEmptyChangeAction();
     },
 
-    dialogUpdateHandle: function(item, type, cityObj, countyObj) {
+    dialogUpdateHandle: function(item, type, cityObj, countyObj, e) {
+        e.stopPropagation();
         this.props.addMarketDialogAction(true);
         this.props.marketDialogTypeAction(MARKET_DIALOG_TYPE.UPDATE);
 
@@ -140,6 +141,10 @@ const MarketLAPI = {
             item,
             cityObj, countyObj
         });
+    },
+
+    marketListHandle: function(e, item) {
+        this.props.marketListHandleAction(item);
     },
 
     intChange: function(v, type) {
@@ -380,7 +385,8 @@ const MarketLAPI = {
         // console.log(this.props.marketNewIptReducer);
     },
 
-    deleteMarketHandle: function (item, obj , index) {
+    deleteMarketHandle: function (item, obj , index, e) {
+        e.stopPropagation();
         this.props.addMarketDialogAction(true);
         this.props.marketDialogTypeAction(MARKET_DIALOG_TYPE.DELETE);
         this.props.marketDeleteChangeAction(item);
@@ -394,6 +400,7 @@ const MarketLAPI = {
                 this.isQueryList = false;
                 if(data.data.code === 0) {
                     props.marketListQueryAction(data.data.list);
+                    props.marketListHandleAction(data.data.list[0]);
                 }
             });
         }

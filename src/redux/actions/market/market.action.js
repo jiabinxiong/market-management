@@ -10,6 +10,7 @@ export const marketAction = {
     selectProvince:                             data => ({ type: marketActionType.SELECT_PROVINCE, data }),
     selectCityUpdate:                           data => ({ type: marketActionType.SELECT_CITY_UPDATE, data }),
     selectEmpty:                                data => ({ type: marketActionType.SELECT_EMPTY, data }),
+    listHandle:                                 data => ({ type: marketActionType.LIST_HANDLE, data }),
     newIpt:                                     data => ({ type: marketActionType.NEW_IPT, data }),
     isNewPrompt:                                data => ({ type: marketActionType.IS_NEW_PROMPT, data }),
     updateChange:                               data => ({ type: marketActionType.UPDATE_CHANGE, data }),
