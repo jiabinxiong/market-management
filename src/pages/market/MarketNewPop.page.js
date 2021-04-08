@@ -1,7 +1,7 @@
 import React from 'react';
 import {Carousel, Upload} from "antd";
 import { connect } from 'react-redux';
-import {Map} from "react-amap";
+// import {Map} from "react-amap";
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 // import PopComponent from '../../components/pop/Pop.component';

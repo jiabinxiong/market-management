@@ -1,6 +1,6 @@
 import { marketActionType } from '../../actionType';
-import { DIALOG_TYPE, MARKET_OPERATE_TYPE, ADMINISTRATION , MARKET_CHANGE_TYPE, MARKET_DIALOG_TYPE} from '../../../constants';
-import { newMarketModule, marketNewPromptModule, administrationFilterModule } from '../../../moduls';
+import { DIALOG_TYPE, MARKET_OPERATE_TYPE, ADMINISTRATION , MARKET_CHANGE_TYPE, MARKET_DIALOG_TYPE,} from '../../../constants';
+import { newMarketModule, marketNewPromptModule, administrationFilterModule, marketMapModule } from '../../../moduls';
 
 function marketListReducer(state = [], action) {
     switch (action.type) {
@@ -8,21 +8,27 @@ function marketListReducer(state = [], action) {
             return action.data;
         case marketActionType.ADD:
             const copyAddState = JSON.parse(JSON.stringify(state));
-            copyAddState.push(action.data);
+            copyAddState.unshift(action.data);
             return copyAddState;
         case marketActionType.UPDATE:
             const copyUpdateState = JSON.parse(JSON.stringify(state));
             const index = copyUpdateState.findIndex((data, index) => action.data._id === data._id )
 
             copyUpdateState.splice(index, 1, action.data);
-
             return copyUpdateState;
+        case marketActionType.DELETE:
+            console.log(action.data);
+            const copyDeleteState = JSON.parse(JSON.stringify(state));
+            const deleteIndex = copyDeleteState.findIndex((data, index) => action.data === data._id );
+            console.log(deleteIndex)
+            copyDeleteState.splice(deleteIndex, 1 );
+            return copyDeleteState;
         default:
             return state;
     }
 }
 
-function addMarketDialogReducer(state = false, action) {
+function addMarketDialogReducer(state = true, action) {
     switch (action.type) {
         case marketActionType.DIALOG:
             return action.data;
@@ -87,14 +93,22 @@ function marketNewIptReducer(state = newMarketModule, action) {
                 } else if(Object.prototype.toString.call(action.data.v) === '[object Array]') {
                     copyNewState[action.data.type] = action.data.v;
                 }
-
+            } else if (action.data.type === MARKET_CHANGE_TYPE.ADDRESS) {
+                if(Object.prototype.toString.call(action.data.v) === '[object String]') {
+                    copyNewState[action.data.type].text = action.data.v;
+                } else if(Object.prototype.toString.call(action.data.v) === '[object Array]') {
+                    copyNewState[action.data.type].text = action.data.v[0];
+                    copyNewState[action.data.type].lnglat = action.data.v[1];
+                }
             } else {
                 copyNewState[action.data.type] = action.data.v;
             }
 
             return copyNewState;
         case marketActionType.UPDATE_CHANGE:
-            return action.data
+            return action.data;
+        case marketActionType.DELETE_CHANGE:
+            return action.data;
         case marketActionType.EMPTY_CHANGE:
             return newMarketModule;
         default:
@@ -126,10 +140,19 @@ function marketDialogTypeReducer(state = MARKET_DIALOG_TYPE.NEW, action) {
 }
 
 
+function marketDialogMapReducer(state = marketMapModule, action) {
+    switch(action.type) {
+        case marketActionType.MAP_LNG_LAT:
+            return state;
+        default:
+            return state;
+    }
+}
+
 
 export {
     marketNewPromptReducer, marketListReducer, marketListLoadingReducer, marketDialogTypeReducer,
-    addMarketDialogReducer, administrationSelectReducer, marketNewIptReducer
+    addMarketDialogReducer, administrationSelectReducer, marketNewIptReducer, marketDialogMapReducer
 }
 
 // function marketReducer(state = [], action) {

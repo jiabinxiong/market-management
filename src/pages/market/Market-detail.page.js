@@ -1,6 +1,5 @@
 import React from 'react';
-import { Carousel, Upload } from 'antd'; 
-import { Map } from 'react-amap';
+import { Carousel, Upload } from 'antd';
 
 const contentStyle = {
     height: '160px',
@@ -17,9 +16,9 @@ export default class MarketDetailPage extends React.Component {
             <div className="box">
                 <div className="">
 
-                </div>                                    
+                </div>
             </div>
-        
+
         );
     }
 }

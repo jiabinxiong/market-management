@@ -23,7 +23,7 @@ function MarketLPage(props) {
             MarketLAPI.unsubscribeFromFriendStatus();
         }
     }, [
-        props.marketDialogTypeReducer,
+        props.marketDialogTypeReducer, props.marketDialogTypeReducer,
         props.marketListReducer, props.marketNewIptReducer, props.marketNewPromptReducer
     ]);
 
@@ -78,7 +78,7 @@ function MarketLPage(props) {
                                     return <li className="li" key={item._id}>
                                         <div className="r">
                                             <div
-                                                // onClick={ () => MarketLAPI.deleteMarketHandle(item, MARKET_OPERATE_TYPE.DELETE) }
+                                                onClick={ () => MarketLAPI.deleteMarketHandle(item, MARKET_OPERATE_TYPE.DELETE, index) }
                                                 className="delete-btn btn">
                                                 删除
                                             </div>
@@ -103,13 +103,19 @@ function MarketLPage(props) {
                         </ul>
                     </PerfectScrollbar> : null
                 }
+
+
+                {
+                    props.marketListReducer.length === 0 && !props.marketListLoadingReducer ? <div className="market-list-none">
+                        还没有市场，<span
+                        onClick={ () => MarketLAPI.dialogOpenHandle() }
+                        className="new-btn">去创建吧!</span>
+                    </div> : null
+                }
             </div>
             <AddMarketDialogPage
                 props={props}/>
 
-            {/*<Dialog*/}
-            {/*    rBtnText="删除"*/}
-            {/*    type="prompt" show={true}/>*/}
         </Fragment>
     );
 }
@@ -132,9 +138,11 @@ export default connect(
         marketListQueryAction: marketAction.query,
         marketListUpdateAction: marketAction.update,
         marketListAddAction: marketAction.add,
+        marketListDeleteAction: marketAction.delete,
         marketNewIptAction: marketAction.newIpt,
         marketUploadChangeAction: marketAction.updateChange,
         marketEmptyChangeAction: marketAction.emptyChange,
+        marketDeleteChangeAction: marketAction.deleteChange,
         marketListLoadingAction: marketAction.listLoading,
         marketDialogTypeAction: marketAction.dialogType,
         selectProvinceAction: marketAction.selectProvince,

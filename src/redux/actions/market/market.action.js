@@ -12,8 +12,11 @@ export const marketAction = {
     newIpt:                                     data => ({ type: marketActionType.NEW_IPT, data }),
     isNewPrompt:                                data => ({ type: marketActionType.IS_NEW_PROMPT, data }),
     updateChange:                               data => ({ type: marketActionType.UPDATE_CHANGE, data }),
+    deleteChange:                               data => ({ type: marketActionType.DELETE_CHANGE, data }),
     emptyChange:                                data => ({ type: marketActionType.EMPTY_CHANGE, data }),
     dialogType:                                 data => ({ type: marketActionType.DIALOG_TYPE, data }),
+    mapLnglat:                                  data => ({ type: marketActionType.MAP_LNG_LAT, data }),
+    mapSearchAddress:                           data => ({ type: marketActionType.MAP_SEARCH_ADDRESS, data }),
     // selectCountyEmpty:                          data => ({ type: marketActionType.SELECT_COUNTY_EMPTY, data }),
 
     dialog:                                     data => ({ type: marketActionType.DIALOG, data }),

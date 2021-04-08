@@ -14,8 +14,11 @@ export const marketActionType = {
     IS_NEW_PROMPT:                                      'isNewPrompt',
     LIST_LOADING:                                       'listLoading',
     UPDATE_CHANGE:                                      'updateChange',
+    DELETE_CHANGE:                                      'deleteChange',
     EMPTY_CHANGE:                                       'emptyChange',
     DIALOG_TYPE:                                        'dialogType',
+    MAP_LNG_LAT:                                        'mapLnglat',
+    MAP_SEARCH_ADDRESS:                                 'mapSearchAddress',
 
     // SELECT_COUNTY_EMPTY:                                'selectCountyEmpty',
     FILTER_LIST:                                        'filterList',

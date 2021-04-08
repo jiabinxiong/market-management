@@ -23,12 +23,14 @@ http.interceptors.response.use(function(response) {
 
 
 // get封装
-export function get(url, params = {}) {
+export function get(url, params) {
+
     return new Promise((resolve, reject) => {
         http({
             url,
-            params,
+            // data,
             method: "get",
+            params
         })
             .then((res) => {
                 resolve(res);

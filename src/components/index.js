@@ -4,6 +4,7 @@ import IptComponent from './ipt/Ipt.component';
 import LoadingComponent from './loading/Loading.component';
 import Dialog from './dialog';
 import TextareaComponent from './textarea/Textarea.component';
+import MapComponent from './map/Map.component';
 
 export {
     WindowPopComponent,
@@ -11,5 +12,6 @@ export {
     BtnComponent,
     IptComponent,
     LoadingComponent,
-    TextareaComponent
+    TextareaComponent,
+    MapComponent
 }

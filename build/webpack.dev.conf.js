@@ -15,7 +15,15 @@ module.exports = {
         port: 8000,
         host: 'localhost',
         proxy: {
-            '/api': 'http://192.168.1.10:3000'
+            '/api': 'http://192.168.1.10:3000',
+            '/amap': {
+                target: 'http://restapi.amap.com',
+                changeOrigin: true,
+                ws: true,
+                pathRewrite: {
+                    '^/amap': ''
+                }
+            }
         }
     },
     module: {

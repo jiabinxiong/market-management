@@ -1,7 +1,7 @@
-import { marketService, uploadService } from '../../service';
+import { marketService, uploadService, mapService } from '../../service';
 import {
     DIALOG_TYPE, MARKET_OPERATE_TYPE, MARKET_CHANGE_TYPE,
-    ADMINISTRATION, MARKET_NEW_PROMP_TYPE, MARKET_DIALOG_TYPE
+    ADMINISTRATION, MARKET_NEW_PROMP_TYPE, MARKET_DIALOG_TYPE,
 } from '../../constants';
 import { newMarketModule, marketNewPromptModule } from '../../moduls';
 import tool from '../../common/tool';
@@ -13,49 +13,91 @@ const MarketLAPI = {
         // console.log(this.props.marketNewIptReducer);
         const marketNewIptReducer = this.props.marketNewIptReducer;
         const marketNewPromptReducer = this.props.marketNewPromptReducer;
+        const copyMarketNewPromptModule = JSON.parse(JSON.stringify(marketNewPromptModule));
+
         if(tool.space().all(marketNewIptReducer.name) || marketNewIptReducer.name.length === 0) {
-            this.props.marketIsNewPromptAction({
-                name: MARKET_NEW_PROMP_TYPE.NAME.NULL
-            });
+            copyMarketNewPromptModule.name = {
+                text: MARKET_NEW_PROMP_TYPE.NAME.NULL,
+                required: true
+            }
         } else if(marketNewIptReducer.name.length > 100) {
-            this.props.marketIsNewPromptAction({
-                name: MARKET_NEW_PROMP_TYPE.NAME.MAX_LENGTH
-            });
+            copyMarketNewPromptModule.name = {
+                text: MARKET_NEW_PROMP_TYPE.NAME.MAX_LENGTH,
+                required: true
+            }
+        } else {
+            copyMarketNewPromptModule.name = {
+                text: '',
+                required: false
+            }
         }
 
         if(marketNewIptReducer.administration.province.code === undefined) {
-            this.props.marketIsNewPromptAction({
-                administration: MARKET_NEW_PROMP_TYPE.PROVINCE.NULL
-            });
+            copyMarketNewPromptModule.administration = {
+                text: MARKET_NEW_PROMP_TYPE.PROVINCE.NULL,
+                required: true
+            }
         } else if(marketNewIptReducer.administration.city.code === undefined) {
-            this.props.marketIsNewPromptAction({
-                administration: MARKET_NEW_PROMP_TYPE.PROVINCE.CITY_NULL
-            });
+            copyMarketNewPromptModule.administration = {
+                text: MARKET_NEW_PROMP_TYPE.PROVINCE.CITY_NULL,
+                required: true
+            }
         } else if(marketNewIptReducer.administration.county.code === undefined) {
-            this.props.marketIsNewPromptAction({
-                administration: MARKET_NEW_PROMP_TYPE.PROVINCE.COUNTY_NULL
-            });
+            copyMarketNewPromptModule.administration = {
+                text: MARKET_NEW_PROMP_TYPE.PROVINCE.COUNTY_NULL,
+                required: true
+            }
+        } else {
+            copyMarketNewPromptModule.administration = {
+                text: '',
+                required: false
+            }
         }
 
         if(marketNewIptReducer.cover.length === 0) {
-            this.props.marketIsNewPromptAction({
-                cover: MARKET_NEW_PROMP_TYPE.COVER.NULL
-            })
+            copyMarketNewPromptModule.cover = {
+                text: MARKET_NEW_PROMP_TYPE.COVER.NULL,
+                required: true
+            }
         } else if(marketNewIptReducer.cover.length > 2) {
-            this.props.marketIsNewPromptAction({
-                cover: MARKET_NEW_PROMP_TYPE.COVER.MAX_LENGTH
-            })
+            copyMarketNewPromptModule.cover = {
+                text: MARKET_NEW_PROMP_TYPE.COVER.MAX_LENGTH,
+                required: true
+            }
+        } else {
+            copyMarketNewPromptModule.cover = {
+                text: '',
+                required: false
+            }
         }
 
         if(tool.space().all(marketNewIptReducer.summary) || marketNewIptReducer.summary.length === 0) {
-            this.props.marketIsNewPromptAction({
-                summary: MARKET_NEW_PROMP_TYPE.SUMMARY.NULL
-            })
+            copyMarketNewPromptModule.summary = {
+                text: MARKET_NEW_PROMP_TYPE.SUMMARY.NULL,
+                required: true
+            }
         } else {
-
+            copyMarketNewPromptModule.summary = {
+                text: '',
+                required: false
+            }
         }
 
-        // return isVerifyArr.filter((data, index) => data === false).length === 0 ? true : false;
+        this.props.marketIsNewPromptAction({
+            ...copyMarketNewPromptModule
+        });
+
+        let isReturn = true;
+        for(const i in copyMarketNewPromptModule ) {
+            if( copyMarketNewPromptModule[i].required) {
+                isReturn = true;
+                break;
+            } else {
+                isReturn = false;
+            }
+        }
+
+        return isReturn;
     },
     dialogOpenHandle: function() {
         this.props.addMarketDialogAction(true);
@@ -67,19 +109,10 @@ const MarketLAPI = {
         this.props.marketEmptyChangeAction();
     },
 
-    dialogDeleteOpenHandle: function() {
-
-    },
-
-    dialogDeleteCloseCallback: function() {
-
-    },
-
     dialogUpdateHandle: function(item) {
         this.props.addMarketDialogAction(true);
         this.props.marketDialogTypeAction(MARKET_DIALOG_TYPE.UPDATE);
 
-        // this.props.marketUploadChangeAction(tool.filterObj(item, ['_id', '__v']));
         this.props.marketUploadChangeAction(item);
     },
 
@@ -90,7 +123,10 @@ const MarketLAPI = {
         });
 
         this.props.marketIsNewPromptAction({
-            [type]: ''
+            [type]: {
+                text: '',
+                required: false
+            }
         })
     },
 
@@ -148,32 +184,85 @@ const MarketLAPI = {
         });
     },
 
-    determineCallback: function(back) {
-        // this.iptVerify();
+    mapClickHandle: function(event) {
+        // lng: 0, lat: 0 // lng经度 lat 纬度
+        mapService.tranName({
+            location: `${event.lnglat.lng},${event.lnglat.lat}`
+        }).then(data => {
+            const regeocode = data.data.regeocode.addressComponent;
+            const cityType = Object.prototype.toString.call(regeocode.city);
 
+            if(data.data.infocode === '10000') {
+                this.props.marketNewIptAction({
+                    v: [
+                        `${regeocode.province}${cityType === '[object Array]' ? '' : regeocode.city}${regeocode.district}${regeocode.township}${regeocode.streetNumber.street}${regeocode.streetNumber.number}`,
+                        `${event.lnglat.lng},${event.lnglat.lat}`
+                    ],
+                    type: MARKET_CHANGE_TYPE.ADDRESS
+                });
+            }
+        })
+    },
+
+    mapSearchAddressHandle: function(value) {
+        mapService.transcoding({
+            address: value
+        }).then(data => {
+            console.log(data.data.geocodes);
+            if(data.data.infocode === '10000') {
+                this.props.marketNewIptAction({
+                    v: [
+                        value,
+                        data.data.geocodes[0].location
+                    ],
+                    type: MARKET_CHANGE_TYPE.ADDRESS
+                });
+            }
+        })
+    },
+
+    determineCallback: function(back) {
+        console.log(this.props.marketNewIptReducer);
         if(this.props.marketDialogTypeReducer === MARKET_DIALOG_TYPE.NEW) {
-            marketService.add(this.props.marketNewIptReducer).then(data => {
-                if(data.data.code === 0) {
-                    back(() => {
-                        this.props.marketListAddAction({
-                            ...this.props.marketNewIptReducer,
-                            _id: data.data._id
-                        });
-                        this.props.addMarketDialogAction(false);
-                        this.props.marketEmptyChangeAction();
-                    })
-                }
-            })
+
+           // if(!this.iptVerify()) {
+           //     marketService.add(this.props.marketNewIptReducer).then(data => {
+           //         if(data.data.code === 0) {
+           //             back(() => {
+           //                 this.props.marketListAddAction({
+           //                     ...this.props.marketNewIptReducer,
+           //                     _id: data.data._id
+           //                 });
+           //                 this.props.addMarketDialogAction(false);
+           //                 this.props.marketEmptyChangeAction();
+           //             })
+           //         }
+           //     })
+           // }
         } else if (this.props.marketDialogTypeReducer === MARKET_DIALOG_TYPE.UPDATE) {
-            marketService.update(
-                tool.filterObj(this.props.marketNewIptReducer, ['__v'])
-            ).then(data => {
+            if(!this.iptVerify()) {
+                marketService.update(
+                    tool.filterObj(this.props.marketNewIptReducer, ['__v'])
+                ).then(data => {
+                    if(data.data.code === 0) {
+                        back(() => {
+                            this.props.marketListUpdateAction(tool.filterObj(this.props.marketNewIptReducer, ['__v']));
+                            this.props.addMarketDialogAction(false);
+                            this.props.marketEmptyChangeAction();
+                        })
+                    }
+                })
+            }
+        } else if (this.props.marketDialogTypeReducer === MARKET_DIALOG_TYPE.DELETE) {
+            marketService.delete({
+                id: this.props.marketNewIptReducer._id
+            }).then(data => {
                 if(data.data.code === 0) {
                     back(() => {
-                        this.props.marketListUpdateAction(tool.filterObj(this.props.marketNewIptReducer, ['__v']));
                         this.props.addMarketDialogAction(false);
                         this.props.marketEmptyChangeAction();
-                    })
+                        this.props.marketListDeleteAction(this.props.marketNewIptReducer._id);
+                    });
                 }
             })
         }
@@ -182,16 +271,18 @@ const MarketLAPI = {
         // console.log(this.props.marketNewIptReducer);
     },
 
-    dialogDeleteDetermineCallback: function() {
-
+    deleteMarketHandle: function (item, obj , index) {
+        this.props.addMarketDialogAction(true);
+        this.props.marketDialogTypeAction(MARKET_DIALOG_TYPE.DELETE);
+        this.props.marketDeleteChangeAction(item);
     },
 
     subscribeToFriendStatus: function(marketLStatusHandle, props) {
         this.props = props;
-        if(props.marketListReducer.length === 0) {
+        if(this.isQueryList) {
             marketService.query({}).then((data) => {
                 props.marketListLoadingAction(false);
-
+                this.isQueryList = false;
                 if(data.data.code === 0) {
                     props.marketListQueryAction(data.data.list);
                 }
@@ -200,229 +291,8 @@ const MarketLAPI = {
     },
     unsubscribeFromFriendStatus: function() {
         this.props = null;
-        this.isQueryList = true;
+        // this.isQueryList = true;
     }
 };
-
-// const MarketLAPI = {
-//     props: null,
-//     isAddBtn: true,
-//     isQueryList: true,
-//     administrationArr: [0, 0, 0],
-//     coverList: [],
-//     newMarketObj: JSON.parse(JSON.stringify(newMarketModule)),
-//     copyMarketNewPromptModule: JSON.parse(JSON.stringify(marketNewPromptModule)),
-//     iptVerify: function() {
-//         let isVerifyArr = [false, false, false, false];
-//         const newUpdateChange = this.props.marketNewUpdateChangeReducer;
-//         const administrationFilter = this.props.administrationFilterReducer;
-//         const coverUpload = this.props.marketCoverUploadReducer;
-//
-//         if(tool.space().all(newUpdateChange.name) || newUpdateChange.name.length === 0 ) {
-//             this.copyMarketNewPromptModule.name = MARKET_NEW_PROMP_TYPE.NAME.NULL;
-//             isVerifyArr[0] = false;
-//         } else if(newUpdateChange.name.length > 100) {
-//             this.copyMarketNewPromptModule.name = MARKET_NEW_PROMP_TYPE.NAME.MAX_LENGTH;
-//             isVerifyArr[0] = false;
-//         } else {
-//             isVerifyArr[0] = true;
-//         }
-//
-//         if(administrationFilter.province.value.code === '') {
-//             this.copyMarketNewPromptModule.administration = MARKET_NEW_PROMP_TYPE.PROVINCE.NULL;
-//             isVerifyArr[1] = false;
-//         } else if (administrationFilter.city.value.code === '') {
-//             this.copyMarketNewPromptModule.administration = MARKET_NEW_PROMP_TYPE.PROVINCE.CITY_NULL;
-//             isVerifyArr[1] = false;
-//         } else if (administrationFilter.county.value.code === '') {
-//             this.copyMarketNewPromptModule.administration = MARKET_NEW_PROMP_TYPE.PROVINCE.COUNTY_NULL;
-//             isVerifyArr[1] = false;
-//         } else {
-//             isVerifyArr[1] = true;
-//         }
-//
-//         if(coverUpload.length === 0) {
-//             this.copyMarketNewPromptModule.cover = MARKET_NEW_PROMP_TYPE.COVER.NULL;
-//             isVerifyArr[2] = false;
-//         } else if(coverUpload.length > 2) {
-//             this.copyMarketNewPromptModule.cover = MARKET_NEW_PROMP_TYPE.COVER.MAX_LENGTH;
-//             isVerifyArr[2] = false;
-//         } else {
-//             isVerifyArr[2] = true;
-//         }
-//
-//         if(tool.space().all(newUpdateChange.summary) || newUpdateChange.summary.length === 0) {
-//             this.copyMarketNewPromptModule.summary = MARKET_NEW_PROMP_TYPE.SUMMARY.NULL;
-//             isVerifyArr[3] = false;
-//         } else {
-//             isVerifyArr[3] = true;
-//         }
-//
-//         this.props.marketIsNewPromptAction({
-//             ...this.copyMarketNewPromptModule
-//         });
-//
-//         return isVerifyArr.filter((data, index) => data === false).length === 0 ? true : false;
-//     },
-//     emptyFun: function() {
-//         this.props.marketEmptyChangeAction(newMarketModule);
-//         this.props.commonEmptyAdministrationAction({});
-//         this.props.marketEmptyCoverAction([]);
-//         this.props.marketIsNewPromptAction({
-//             ...marketNewPromptModule
-//         });
-//     },
-//     dialogNewFun: function(type) {
-//         this.props.marketDialogAction(true);
-//         this.props.marketOperateTypeAction(type);
-//         this.props.marketDialogTypeAction(DIALOG_TYPE.pop);
-//     },
-//     dialogNewHandle: function(type) {
-//         this.dialogNewFun(type);
-//     },
-//     dialogUpdateHandle: function(item, type) {
-//         this.dialogNewFun(type);
-//
-//         // this.props.marketAddCoverAction([data.data.url]);
-//         this.props.marketUpdateChangeAction({
-//             ...item
-//         });
-//     },
-//     dialogCloseCallback: function() {
-//         this.props.marketDialogAction(false);
-//         this.emptyFun();
-//     },
-//     dialogDetermineCallback: function (back, obj, type) {
-//         if(type === MARKET_OPERATE_TYPE.DELETE) {
-//
-//             marketService.delete({
-//                 id: obj._id
-//             }).then(data => {
-//                 if(data.data.code === 0) {
-//                     back(() => {
-//                         this.props.marketDialogAction(false);
-//                     });
-//                     this.props.marketDeleteAction(obj._id);
-//                 }
-//             })
-//
-//         } else if (type === MARKET_OPERATE_TYPE.UPDATE) {
-//             console.log('xxx');
-//         } else if (type === MARKET_OPERATE_TYPE.NEW) {
-//             if(this.iptVerify()) {
-//                 if(this.isAddBtn) {
-//                     const reqData = {
-//                         ...this.props.marketNewUpdateChangeReducer,
-//                         administration: [
-//                             this.props.administrationFilterReducer.province.value,
-//                             this.props.administrationFilterReducer.city.value,
-//                             this.props.administrationFilterReducer.county.value
-//                         ],
-//                         cover: this.props.marketCoverUploadReducer
-//                     }
-//                     this.isAddBtn = false;
-//                     marketService.add({
-//                         ...reqData
-//                     }).then(data => {
-//                         this.isAddBtn = true;
-//                         if(data.data.code === 0) {
-//                             this.props.marketAddAction({
-//                                 ...reqData,
-//                                 _id: data.data._id
-//                             });
-//                             back(() => {
-//                                 this.props.marketDialogAction(false);
-//                             });
-//                             this.emptyFun();
-//
-//                         } else {
-//
-//                         }
-//                     })
-//                 }
-//             }
-//         }
-//     },
-//     newChange: function(v, type) {
-//         this.newMarketObj[type] = v.target.value;
-//
-//         this.copyMarketNewPromptModule[type] = '';
-//         this.props.marketIsNewPromptAction({
-//             ...this.copyMarketNewPromptModule
-//         });
-//
-//         this.props.marketNewChangeAction({
-//             type: type,
-//             v: v.target.value
-//         });
-//     },
-//     cityChange: function(type,  city, option) {
-//         if(type === ADMINISTRATION.PROVINCE) {
-//             this.administrationArr[0] = option.value;
-//             this.props.commonSelectProvinceAction({
-//                 code: option.value,
-//                 name: option.children,
-//                 city: city
-//             });
-//
-//         } else if (type === ADMINISTRATION.CITY) {
-//             this.props.commonSelectCityAction({
-//                 provinceCode: this.administrationArr[0],
-//                 cityCode: option.value,
-//                 name: option.children,
-//                 county: city
-//             });
-//         } else if( type === ADMINISTRATION.COUNTY ) {
-//             this.props.commonSelectCountyAction({
-//                 option
-//             })
-//         }
-//
-//         this.copyMarketNewPromptModule.administration = '';
-//         this.props.marketIsNewPromptAction({
-//             ...this.copyMarketNewPromptModule
-//         });
-//     },
-//     uploadChange: function(info) {
-//         const formData = new FormData();
-//         formData.append('market', info.file);
-//         uploadService.image(formData).then(data => {
-//             if(data.data.code === 0) {
-//                 this.props.marketAddCoverAction([data.data.url]);
-//             }
-//         })
-//
-//         this.copyMarketNewPromptModule.cover = '';
-//         this.props.marketIsNewPromptAction({
-//             ...this.copyMarketNewPromptModule
-//         });
-//     },
-//     coverDeleteHandle: function(url, index) {
-//         this.props.marketDeleteCoverAction(index)
-//     },
-//     deleteMarketHandle: function(item, type) {
-//         this.props.marketDialogAction(true);
-//         this.props.marketOperateTypeAction(type);
-//         this.props.marketDialogTypeAction(DIALOG_TYPE.prompt);
-//         this.props.marketListFilterAction(item);
-//     },
-//     subscribeToFriendStatus: function(marketLStatusHandle, props) {
-//         this.props = props;
-//
-//         if(this.isQueryList) {
-//             marketService.query({}).then((data) => {
-//                 props.marketListLoadingAction(false);
-//                 this.isQueryList = false;
-//                 if(data.data.code === 0) {
-//                     props.marketQueryAction(data.data.list);
-//                 }
-//             });
-//         }
-//
-//     },
-//     unsubscribeFromFriendStatus: function() {
-//
-//     }
-// };
 
 export default MarketLAPI;
