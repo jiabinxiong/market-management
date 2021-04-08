@@ -10,9 +10,7 @@ const MarketLAPI = {
     props: null,
     isQueryList: true,
     iptVerify: function() {
-        // console.log(this.props.marketNewIptReducer);
         const marketNewIptReducer = this.props.marketNewIptReducer;
-        const marketNewPromptReducer = this.props.marketNewPromptReducer;
         const copyMarketNewPromptModule = JSON.parse(JSON.stringify(marketNewPromptModule));
 
         if(tool.space().all(marketNewIptReducer.name) || marketNewIptReducer.name.length === 0) {
@@ -83,6 +81,28 @@ const MarketLAPI = {
             }
         }
 
+        if(tool.space().all(marketNewIptReducer.address.text) || marketNewIptReducer.address.text.length === 0) {
+            copyMarketNewPromptModule.address = {
+                text: MARKET_NEW_PROMP_TYPE.ADDRESS.NULL,
+                required: true
+            }
+        } else if (marketNewIptReducer.address.lnglat === '') {
+            copyMarketNewPromptModule.address = {
+                text: MARKET_NEW_PROMP_TYPE.ADDRESS.PROMP,
+                required: true
+            }
+        } else if (marketNewIptReducer.address.lnglat === 'no') {
+            copyMarketNewPromptModule.address = {
+                text: MARKET_NEW_PROMP_TYPE.ADDRESS.SEARCH_NULL,
+                required: true
+            }
+        } else {
+            copyMarketNewPromptModule.address = {
+                text: '',
+                required: false
+            }
+        }
+
         this.props.marketIsNewPromptAction({
             ...copyMarketNewPromptModule
         });
@@ -97,6 +117,7 @@ const MarketLAPI = {
             }
         }
 
+
         return isReturn;
     },
     dialogOpenHandle: function() {
@@ -109,11 +130,16 @@ const MarketLAPI = {
         this.props.marketEmptyChangeAction();
     },
 
-    dialogUpdateHandle: function(item) {
+    dialogUpdateHandle: function(item, type, cityObj, countyObj) {
         this.props.addMarketDialogAction(true);
         this.props.marketDialogTypeAction(MARKET_DIALOG_TYPE.UPDATE);
 
         this.props.marketUploadChangeAction(item);
+
+        this.props.selectCityUpdateAction({
+            item,
+            cityObj, countyObj
+        });
     },
 
     intChange: function(v, type) {
@@ -131,6 +157,7 @@ const MarketLAPI = {
     },
 
     cityChange: function(type, obj, option) {
+        const copyMarketNewPromptReducer = JSON.parse(JSON.stringify(this.props.marketNewPromptReducer));
         this.props.marketNewIptAction({
             v: option,
             type: type
@@ -143,17 +170,48 @@ const MarketLAPI = {
                 obj,
                 option
             });
+
+            this.props.marketNewIptAction({
+                v: ['', 'no'],
+                type: MARKET_CHANGE_TYPE.ADDRESS
+            });
         } else if (type === ADMINISTRATION.CITY) {
             this.props.selectCityAction({
                 obj,
                 option,
                 provinceCode: this.props.marketNewIptReducer.administration.province.code
             });
-        } else if( type === ADMINISTRATION.COUNTY ) {
 
-            // this.props.selectCountyAction({
-            //
-            // });
+            this.props.marketNewIptAction({
+                v: ['', 'no'],
+                type: MARKET_CHANGE_TYPE.ADDRESS
+            });
+        } else if( type === ADMINISTRATION.COUNTY ) {
+            const administrationObj = this.props.marketNewIptReducer.administration;
+
+            mapService.transcoding({
+                address: administrationObj.province.name + administrationObj.city.name + option.children
+            }).then(data => {
+                if(data.data.infocode === '10000') {
+                    if(data.data.count === '1') {
+                        copyMarketNewPromptReducer.address = {
+                            text: '',
+                            required: false
+                        }
+                        this.props.marketNewIptAction({
+                            v: [
+                                administrationObj.province.name + administrationObj.city.name + option.children,
+                                data.data.geocodes[0].location
+                            ],
+                            type: MARKET_CHANGE_TYPE.ADDRESS
+                        });
+                    }
+
+                    this.props.marketIsNewPromptAction({
+                        ...copyMarketNewPromptReducer
+                    });
+                }
+            })
         }
 
     },
@@ -184,8 +242,19 @@ const MarketLAPI = {
         });
     },
 
+    lnglatStrNumber: function(v) {
+        if(v === 'no') {
+            return [];
+        } else {
+            const lnglatArr = v.split(',');
+            return [parseFloat(lnglatArr[0]), parseFloat(lnglatArr[1])];
+        }
+    },
+
     mapClickHandle: function(event) {
         // lng: 0, lat: 0 // lng经度 lat 纬度
+        const copyMarketNewPromptReducer = JSON.parse(JSON.stringify(this.props.marketNewPromptReducer));
+
         mapService.tranName({
             location: `${event.lnglat.lng},${event.lnglat.lat}`
         }).then(data => {
@@ -193,6 +262,15 @@ const MarketLAPI = {
             const cityType = Object.prototype.toString.call(regeocode.city);
 
             if(data.data.infocode === '10000') {
+                copyMarketNewPromptReducer.address = {
+                    text: '',
+                    required: false
+                }
+
+                this.props.marketIsNewPromptAction({
+                    ...copyMarketNewPromptReducer
+                });
+
                 this.props.marketNewIptAction({
                     v: [
                         `${regeocode.province}${cityType === '[object Array]' ? '' : regeocode.city}${regeocode.district}${regeocode.township}${regeocode.streetNumber.street}${regeocode.streetNumber.number}`,
@@ -205,40 +283,71 @@ const MarketLAPI = {
     },
 
     mapSearchAddressHandle: function(value) {
-        mapService.transcoding({
-            address: value
-        }).then(data => {
-            console.log(data.data.geocodes);
-            if(data.data.infocode === '10000') {
-                this.props.marketNewIptAction({
-                    v: [
-                        value,
-                        data.data.geocodes[0].location
-                    ],
-                    type: MARKET_CHANGE_TYPE.ADDRESS
-                });
+        const marketNewIptReducer = this.props.marketNewIptReducer;
+        const copyMarketNewPromptReducer = JSON.parse(JSON.stringify(this.props.marketNewPromptReducer));
+        if(tool.space().all(marketNewIptReducer.address.text) || marketNewIptReducer.address.text.length === 0) {
+            copyMarketNewPromptReducer.address = {
+                text: MARKET_NEW_PROMP_TYPE.ADDRESS.NULL,
+                required: true
             }
-        })
+            this.props.marketIsNewPromptAction({
+                ...copyMarketNewPromptReducer
+            });
+        } else {
+            mapService.transcoding({
+                address: value
+            }).then(data => {
+                if(data.data.infocode === '10000') {
+                    if(data.data.count === '1') {
+                        copyMarketNewPromptReducer.address = {
+                            text: '',
+                            required: false
+                        }
+                        this.props.marketNewIptAction({
+                            v: [
+                                value,
+                                data.data.geocodes[0].location
+                            ],
+                            type: MARKET_CHANGE_TYPE.ADDRESS
+                        });
+                    } else if (data.data.count === '0') {
+                        copyMarketNewPromptReducer.address = {
+                            text: MARKET_NEW_PROMP_TYPE.ADDRESS.SEARCH_NULL,
+                            required: true
+                        }
+
+                        this.props.marketNewIptAction({
+                            v: [value, 'no'],
+                            type: MARKET_CHANGE_TYPE.ADDRESS
+                        });
+                    }
+
+                    this.props.marketIsNewPromptAction({
+                        ...copyMarketNewPromptReducer
+                    });
+                }
+            })
+        }
+
     },
 
     determineCallback: function(back) {
-        console.log(this.props.marketNewIptReducer);
         if(this.props.marketDialogTypeReducer === MARKET_DIALOG_TYPE.NEW) {
 
-           // if(!this.iptVerify()) {
-           //     marketService.add(this.props.marketNewIptReducer).then(data => {
-           //         if(data.data.code === 0) {
-           //             back(() => {
-           //                 this.props.marketListAddAction({
-           //                     ...this.props.marketNewIptReducer,
-           //                     _id: data.data._id
-           //                 });
-           //                 this.props.addMarketDialogAction(false);
-           //                 this.props.marketEmptyChangeAction();
-           //             })
-           //         }
-           //     })
-           // }
+           if(!this.iptVerify()) {
+               marketService.add(this.props.marketNewIptReducer).then(data => {
+                   if(data.data.code === 0) {
+                       back(() => {
+                           this.props.marketListAddAction({
+                               ...this.props.marketNewIptReducer,
+                               _id: data.data._id
+                           });
+                           this.props.addMarketDialogAction(false);
+                           this.props.marketEmptyChangeAction();
+                       })
+                   }
+               })
+           }
         } else if (this.props.marketDialogTypeReducer === MARKET_DIALOG_TYPE.UPDATE) {
             if(!this.iptVerify()) {
                 marketService.update(

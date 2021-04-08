@@ -42,6 +42,12 @@ export const MARKET_NEW_PROMP_TYPE = {
         NULL: '市场简介不能为空',
         MAX_LENGTH: '市场简介不能超过200个字'
     },
+    ADDRESS: {
+        NULL: '地址不能为空',
+        PROMP: '请点击搜索',
+        SEARCH_NULL: '没有搜索到相关的地址',
+        MAX_LENGTH: '市场地址不能超过100个字'
+    },
     HANG_OUT: {
         MAX_LENGTH: '闲逛须知不能超过100个字'
     },
@@ -59,8 +65,5 @@ export const MARKET_NEW_PROMP_TYPE = {
     },
     HTTP: {
         MAX_LENGTH: '市场名称不能超过100个字'
-    },
-    ADDRESS: {
-        MAX_LENGTH: '市场地址不能超过100个字'
     }
 }

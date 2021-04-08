@@ -83,7 +83,9 @@ function MarketLPage(props) {
                                                 删除
                                             </div>
                                             <div
-                                                onClick={ () => MarketLAPI.dialogUpdateHandle(item, MARKET_OPERATE_TYPE.UPDATE) }
+                                                onClick={
+                                                    () => MarketLAPI.dialogUpdateHandle(item, MARKET_OPERATE_TYPE.UPDATE, props.commonCityReducer, props.commonCountyReducer)
+                                                }
                                                 className="update-btn btn">
                                                 修改
                                             </div>
@@ -148,6 +150,7 @@ export default connect(
         selectProvinceAction: marketAction.selectProvince,
         selectCityAction: marketAction.selectCity,
         selectCountyAction: marketAction.selectCounty,
+        selectCityUpdateAction: marketAction.selectCityUpdate,
         selectEmptyAction: marketAction.selectEmpty,
         marketIsNewPromptAction: marketAction.isNewPrompt,
 

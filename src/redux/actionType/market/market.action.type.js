@@ -10,6 +10,7 @@ export const marketActionType = {
     SELECT_COUNTY:                                      'selectCounty',
     SELECT_PROVINCE:                                    'selectProvince',
     SELECT_EMPTY:                                       'selectEmpty',
+    SELECT_CITY_UPDATE:                                 'selectCityUpdate',
     NEW_IPT:                                            'newIpt',
     IS_NEW_PROMPT:                                      'isNewPrompt',
     LIST_LOADING:                                       'listLoading',

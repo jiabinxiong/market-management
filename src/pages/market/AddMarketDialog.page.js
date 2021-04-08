@@ -204,7 +204,7 @@ function AddMarketDialogPage({props: props}) {
                         </li>
                         <li className="ui-li-form market-new-pop-ui-li-address ">
                             <label className="li-label-form ui-li-label-form">
-                                地 址:
+                                <span className="ui-li-label-form-required">*</span>地 址:
                             </label>
                             <div className="li-block-form ui-li-block-form">
                                 <div className="ui-li-block-ipt-form address-ipt">
@@ -223,7 +223,7 @@ function AddMarketDialogPage({props: props}) {
                                 </div>
                                 <p className="ui-li-prompt-text-form-ipt">
                                     <span className="ui-li-prompt-text-l-form-ipt">
-                                        adafasdfas
+                                        { props.marketNewPromptReducer.address.text }
                                     </span>
                                     <span className="ui-li-prompt-text-r-form-ipt">
                                         你可以用鼠标点击地图会自动找到地址
@@ -232,6 +232,10 @@ function AddMarketDialogPage({props: props}) {
                             </div>
                             <div className="map">
                                 <MapComponent
+                                    center={
+                                        props.marketNewIptReducer[MARKET_CHANGE_TYPE.ADDRESS].lnglat.length !== 0
+                                            ? MarketLAPI.lnglatStrNumber(props.marketNewIptReducer[MARKET_CHANGE_TYPE.ADDRESS].lnglat) : []
+                                    }
                                     onClick={ event => MarketLAPI.mapClickHandle(event) }
                                 />
                             </div>

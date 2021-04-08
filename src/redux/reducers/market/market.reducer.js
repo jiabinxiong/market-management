@@ -17,10 +17,8 @@ function marketListReducer(state = [], action) {
             copyUpdateState.splice(index, 1, action.data);
             return copyUpdateState;
         case marketActionType.DELETE:
-            console.log(action.data);
             const copyDeleteState = JSON.parse(JSON.stringify(state));
             const deleteIndex = copyDeleteState.findIndex((data, index) => action.data === data._id );
-            console.log(deleteIndex)
             copyDeleteState.splice(deleteIndex, 1 );
             return copyDeleteState;
         default:
@@ -28,7 +26,7 @@ function marketListReducer(state = [], action) {
     }
 }
 
-function addMarketDialogReducer(state = true, action) {
+function addMarketDialogReducer(state = false, action) {
     switch (action.type) {
         case marketActionType.DIALOG:
             return action.data;
@@ -46,22 +44,35 @@ function marketListLoadingReducer(state = true, action) {
     }
 }
 
+function cityFilterFun(filterObj, code) {
+    return filterObj.filter(arr => arr.provinceCode === code);
+}
+
 function administrationSelectReducer(state = administrationFilterModule, action) {
     switch (action.type) {
         case marketActionType.SELECT_PROVINCE:
             const copyState = JSON.parse(JSON.stringify(state));
-            const cityFilter = action.data.obj.filter(arr => arr.provinceCode === action.data.option.value);
+            const cityFilter = cityFilterFun(action.data.obj, action.data.option.value);
             copyState.city = cityFilter[0].children;
 
             return copyState;
         case marketActionType.SELECT_CITY:
             const copyCityState = JSON.parse(JSON.stringify(state));
-            const cityFilterArr = action.data.obj.filter(arr => arr.provinceCode === action.data.provinceCode);
+            const cityFilterArr = cityFilterFun(action.data.obj, action.data.provinceCode);;
             const countyFilter = cityFilterArr[0].children.filter(arr => arr.cityCode === action.data.option.value);
             copyCityState.county = countyFilter[0].children;
 
             return copyCityState;
+        case marketActionType.SELECT_CITY_UPDATE:
+            const copyUpdateState = JSON.parse(JSON.stringify(state));
+            const cityUpdateFilter = cityFilterFun(action.data.cityObj, action.data.item.administration.province.code);
+            copyUpdateState.city = cityUpdateFilter[0].children;
 
+            const countyCityObjFilter = cityFilterFun(action.data.countyObj, action.data.item.administration.province.code);
+            const countyObjFilter = countyCityObjFilter[0].children.filter(arr => arr.cityCode === action.data.item.administration.city.code);
+            copyUpdateState.county = countyObjFilter[0].children;
+
+            return copyUpdateState;
         case marketActionType.SELECT_EMPTY:
             const copyStateAll = JSON.parse(JSON.stringify(state));
             return copyStateAll;
@@ -96,6 +107,7 @@ function marketNewIptReducer(state = newMarketModule, action) {
             } else if (action.data.type === MARKET_CHANGE_TYPE.ADDRESS) {
                 if(Object.prototype.toString.call(action.data.v) === '[object String]') {
                     copyNewState[action.data.type].text = action.data.v;
+                    copyNewState[action.data.type].lnglat = '';
                 } else if(Object.prototype.toString.call(action.data.v) === '[object Array]') {
                     copyNewState[action.data.type].text = action.data.v[0];
                     copyNewState[action.data.type].lnglat = action.data.v[1];

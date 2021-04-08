@@ -6,7 +6,7 @@ import { MAP_KEY } from '../../constants';
 import MapAPI from './MapAPI';
 
 function MapComponent (props) {
-    const { zoom:propsZoom = 15 } = props;
+    const { zoom:propsZoom = 15, center = [] } = props;
     // const { lnglat, setLnglat } = useState({ lng: 0, lat: 0 }); // lng经度 lat 纬度
     const [ zoom, setZoom ]  = useState(propsZoom);
 
@@ -21,13 +21,12 @@ function MapComponent (props) {
             MapAPI.unsubscribeFromFriendStatus();
         }
     }, [zoom]);
-
     return (
         <div className="ui-map-block">
             <APILoader akay={MAP_KEY.web}>
                 <Map
                     zoom={zoom}
-                    center={props.center !== undefined ? props.center : false}
+                    center={center.length !== 0 ? center : false}
                     onClick={(event) => MapAPI.onClick(event)}
                 >
                     <div className="ui-zoom">
