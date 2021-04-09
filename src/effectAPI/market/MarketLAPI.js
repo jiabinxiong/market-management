@@ -9,6 +9,9 @@ import tool from '../../common/tool';
 const MarketLAPI = {
     props: null,
     isQueryList: true,
+    isNewBtn: true,
+    isUpdateBtn: true,
+    isDeleteBtn: true,
     iptVerify: function() {
         const marketNewIptReducer = this.props.marketNewIptReducer;
         const copyMarketNewPromptModule = JSON.parse(JSON.stringify(marketNewPromptModule));
@@ -147,6 +150,11 @@ const MarketLAPI = {
         this.props.marketListHandleAction(item);
     },
 
+    marketLogoHandle: function(data, code) {
+        console.log(data);
+        console.log(code);
+    },
+
     intChange: function(v, type) {
         this.props.marketNewIptAction({
             v: v.target.value,
@@ -221,15 +229,16 @@ const MarketLAPI = {
 
     },
 
-    uploadChange: function(info, type) {
+    uploadChange: function(info, back, type) {
         this.props.marketIsNewPromptAction({
             [type]: ''
         })
 
         const formData = new FormData();
-        formData.append('market', info.file);
+        formData.append('market', info, 'example.jpeg' );
         uploadService.image(formData).then(data => {
             if(data.data.code === 0) {
+                back(true);
                 this.props.marketNewIptAction({
                     v: data.data.url,
                     type: type
@@ -337,52 +346,71 @@ const MarketLAPI = {
     },
 
     determineCallback: function(back) {
+        // let isUpdateBtn = true;
+
         if(this.props.marketDialogTypeReducer === MARKET_DIALOG_TYPE.NEW) {
 
            if(!this.iptVerify()) {
-               marketService.add(this.props.marketNewIptReducer).then(data => {
-                   if(data.data.code === 0) {
-                       back(() => {
-                           this.props.marketListAddAction({
-                               ...this.props.marketNewIptReducer,
-                               _id: data.data._id
-                           });
-                           this.props.addMarketDialogAction(false);
-                           this.props.marketEmptyChangeAction();
-                       })
-                   }
-               })
+               if(this.isNewBtn) {
+                   this.isNewBtn = false;
+                   marketService.add(this.props.marketNewIptReducer).then(data => {
+                       if(data.data.code === 0) {
+                           back(() => {
+                               this.props.marketListAddAction({
+                                   ...this.props.marketNewIptReducer,
+                                   _id: data.data._id
+                               });
+                               this.props.addMarketDialogAction(false);
+                               this.props.marketEmptyChangeAction();
+
+                               this.isNewBtn = true;
+                           })
+                       }
+                   })
+               }
+
            }
         } else if (this.props.marketDialogTypeReducer === MARKET_DIALOG_TYPE.UPDATE) {
             if(!this.iptVerify()) {
-                marketService.update(
-                    tool.filterObj(this.props.marketNewIptReducer, ['__v'])
-                ).then(data => {
+                if(this.isUpdateBtn) {
+                    this.isUpdateBtn = false;
+
+                    marketService.update(
+                        tool.filterObj(this.props.marketNewIptReducer, ['__v'])
+                    ).then(data => {
+
+                        if(data.data.code === 0) {
+                            back(() => {
+                                this.props.marketListUpdateAction(tool.filterObj(this.props.marketNewIptReducer, ['__v']));
+                                this.props.addMarketDialogAction(false);
+                                this.props.marketEmptyChangeAction();
+                                this.props.marketListHandleAction(this.props.marketNewIptReducer);
+
+                                this.isUpdateBtn = true;
+                            })
+                        }
+                    })
+                }
+            }
+        } else if (this.props.marketDialogTypeReducer === MARKET_DIALOG_TYPE.DELETE) {
+            if(this.isDeleteBtn) {
+                this.isDeleteBtn = false;
+                marketService.delete({
+                    id: this.props.marketNewIptReducer._id
+                }).then(data => {
                     if(data.data.code === 0) {
                         back(() => {
-                            this.props.marketListUpdateAction(tool.filterObj(this.props.marketNewIptReducer, ['__v']));
                             this.props.addMarketDialogAction(false);
                             this.props.marketEmptyChangeAction();
-                        })
+                            this.props.marketListDeleteAction(this.props.marketNewIptReducer._id);
+
+                            this.isDeleteBtn = true;
+                        });
                     }
                 })
             }
-        } else if (this.props.marketDialogTypeReducer === MARKET_DIALOG_TYPE.DELETE) {
-            marketService.delete({
-                id: this.props.marketNewIptReducer._id
-            }).then(data => {
-                if(data.data.code === 0) {
-                    back(() => {
-                        this.props.addMarketDialogAction(false);
-                        this.props.marketEmptyChangeAction();
-                        this.props.marketListDeleteAction(this.props.marketNewIptReducer._id);
-                    });
-                }
-            })
+
         }
-
-
-        // console.log(this.props.marketNewIptReducer);
     },
 
     deleteMarketHandle: function (item, obj , index, e) {
@@ -400,14 +428,14 @@ const MarketLAPI = {
                 this.isQueryList = false;
                 if(data.data.code === 0) {
                     props.marketListQueryAction(data.data.list);
-                    props.marketListHandleAction(data.data.list[0]);
+                    // props.marketListHandleAction(data.data.list[0]);
                 }
             });
         }
     },
     unsubscribeFromFriendStatus: function() {
         this.props = null;
-        // this.isQueryList = true;
+        this.isUpdateBtn = true;
     }
 };
 

@@ -26,7 +26,7 @@ function marketListReducer(state = [], action) {
     }
 }
 
-function addMarketDialogReducer(state = false, action) {
+function addMarketDialogReducer(state = true, action) {
     switch (action.type) {
         case marketActionType.DIALOG:
             return action.data;
@@ -164,7 +164,6 @@ function marketDialogMapReducer(state = marketMapModule, action) {
 function marketListHandleReducer(state = newMarketModule, action) {
     switch (action.type) {
         case marketActionType.LIST_HANDLE:
-            console.log('a');
             return action.data;
         default:
             return state;

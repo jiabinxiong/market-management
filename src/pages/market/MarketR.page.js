@@ -41,9 +41,9 @@ export default class MarketRPage extends React.Component {
 
                         {
                             this.state.tabIndex === 0 ? <div className="market-detail-tab-detail">
-                                <PerfectScrollbar>
-                                    <MarketDetailPage/>
-                                </PerfectScrollbar>
+                                {/*<PerfectScrollbar>*/}
+                                {/*    <MarketDetailPage/>*/}
+                                {/*</PerfectScrollbar>*/}
                             </div> : null
                         }
 

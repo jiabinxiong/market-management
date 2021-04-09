@@ -7,7 +7,7 @@ import { MapComponent } from '../../components';
 
 function MarketDetailPage(props) {
     const { marketListHandleReducer } = props;
-
+    console.log(marketListHandleReducer);
     return (
         <div className="market-detail-info">
             <div className="market-detail-info-title">
@@ -55,7 +55,10 @@ function MarketDetailPage(props) {
                 <div className="map">
                     <MapComponent
                         center={
-                            [parseFloat(marketListHandleReducer.address.lnglat.split(',')[0]), parseFloat(marketListHandleReducer.address.lnglat.split(',')[1])]
+                            [
+                                parseFloat(marketListHandleReducer.address.lnglat.split(',')[0]),
+                                parseFloat(marketListHandleReducer.address.lnglat.split(',')[1])
+                            ]
                         }
                     />
                 </div>

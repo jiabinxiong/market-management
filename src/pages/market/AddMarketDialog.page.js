@@ -2,14 +2,18 @@ import React from 'react';
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { Select, Upload, Carousel } from "antd";
 
-import { Dialog, IptComponent, TextareaComponent, MapComponent, BtnComponent } from '../../components';
+import { Dialog, IptComponent, TextareaComponent, MapComponent, BtnComponent, ImageCropComponent } from '../../components';
 import {MarketLAPI} from "../../effectAPI";
 const { Option } = Select;
 
 import { ADMINISTRATION, MARKET_CHANGE_TYPE, MARKET_DIALOG_TYPE, DIALOG_TYPE } from '../../constants';
 import { IMG_SERVER } from "../../constants/http.constant";
 
+import UploadCropLogoPage from './UploadCropLogo.page';
+
+
 function AddMarketDialogPage({props: props}) {
+    console.log(props.commonProvinceReducer)
 
     return <Dialog
             className={`${props.marketDialogTypeReducer === MARKET_DIALOG_TYPE.DELETE ? '' : 'market-new-pop'}`}
@@ -25,6 +29,24 @@ function AddMarketDialogPage({props: props}) {
             props.marketDialogTypeReducer === MARKET_DIALOG_TYPE.DELETE ?  <div>你真的想"{ props.marketNewIptReducer.name }"删除</div>  : <div className="market-new-pop-cnt">
                 <PerfectScrollbar>
                     <ul className="ui-ul-form">
+                        <li className="ui-li-form market-upload-logo-li">
+                            <label className="li-label-form ui-li-label-form">
+                                <span className="ui-li-label-form-required"></span>LOGO:
+                            </label>
+                            <div className="li-block-form ui-li-block-form ">
+                                <div className="ui-li-block-ipt-form market-upload-logo-li-ipt-block">
+                                    <UploadCropLogoPage
+                                        uploadCallback={ (data, code) => MarketLAPI.marketLogoHandle(data, code) }
+                                    />
+                                </div>
+
+                                <p className="ui-li-prompt-text-form-ipt">
+                                    <span className="ui-li-prompt-text-l-form-ipt">
+
+                                    </span>
+                                </p>
+                            </div>
+                        </li>
                         <li className="ui-li-form ">
                             <label className="li-label-form ui-li-label-form">
                                 <span className="ui-li-label-form-required">*</span>名 称:
@@ -135,21 +157,21 @@ function AddMarketDialogPage({props: props}) {
                             </label>
                             <div className="ui-li-block-form ui-li-upload-block-form">
                                 <div className="ui-li-block-childer-form ui-li-upload-childer-form block-childer">
-                                    <Upload
-                                        name="file"
-                                        beforeUpload={() => (false)}
-                                        accept=".png, .jpg, .jpeg, .gif"
-                                        disabled={ props.marketNewIptReducer[MARKET_CHANGE_TYPE.COVER].length === 5 ? true : false }
-                                        onChange={info => MarketLAPI.uploadChange(info, MARKET_CHANGE_TYPE.COVER)}
-                                        showUploadList={false}
-                                        className="ui-upload">
-                                        <div className="icon-block">
-                                            <div className="info">
-                                                <span className="icon iconfont icon-add-icon "></span>
-                                                <span className="text">上传</span>
-                                            </div>
-                                        </div>
-                                    </Upload>
+                                    {/*<Upload*/}
+                                    {/*    name="file"*/}
+                                    {/*    beforeUpload={() => (false)}*/}
+                                    {/*    accept=".png, .jpg, .jpeg, .gif"*/}
+                                    {/*    disabled={ props.marketNewIptReducer[MARKET_CHANGE_TYPE.COVER].length === 5 ? true : false }*/}
+                                    {/*    onChange={info => MarketLAPI.uploadChange(info, MARKET_CHANGE_TYPE.COVER)}*/}
+                                    {/*    showUploadList={false}*/}
+                                    {/*    className="ui-upload">*/}
+                                    {/*    <div className="icon-block">*/}
+                                    {/*        <div className="info">*/}
+                                    {/*            <span className="icon iconfont icon-add-icon "></span>*/}
+                                    {/*            <span className="text">上传</span>*/}
+                                    {/*        </div>*/}
+                                    {/*    </div>*/}
+                                    {/*</Upload>*/}
                                     <div className="market-detail-carousel">
                                         {
                                             props.marketNewIptReducer[MARKET_CHANGE_TYPE.COVER].length !== 0 ?
@@ -162,7 +184,15 @@ function AddMarketDialogPage({props: props}) {
                                                                     className="delete-btn">
                                                                     删除第{index+1}张图片
                                                                 </div>
-                                                                <img src={`${IMG_SERVER}${data}`}/>
+                                                                <div className="img"
+                                                                     style={{
+                                                                         backgroundImage:`url(${IMG_SERVER}${data})`,
+                                                                         backgroundSize: "cover",
+                                                                         backgroundPosition: "center"
+                                                                     }}>
+
+                                                                </div>
+                                                                {/*<img src={`${IMG_SERVER}${data}`}/>*/}
                                                             </div>
                                                         )
                                                     }
@@ -176,10 +206,16 @@ function AddMarketDialogPage({props: props}) {
                                     <span className="ui-li-prompt-text-l-form-ipt">
                                         { props.marketNewPromptReducer.cover.text }
                                     </span>
-                                        <span className="ui-li-prompt-text-r-form-ipt">
+                                    <span className="ui-li-prompt-text-r-form-ipt">
                                         最多还可以上传{ 5- props.marketNewIptReducer[MARKET_CHANGE_TYPE.COVER].length}/5张图片
                                     </span>
                                 </p>
+                                <ImageCropComponent
+                                    addText="添加封面"
+                                    promptText="还没有添加封面"
+                                    uploadChange={(info, back) => MarketLAPI.uploadChange(info, back, MARKET_CHANGE_TYPE.COVER)}
+                                />
+
                             </div>
                         </li>
                         <li className="ui-li-form ui-li-textarea-form">
