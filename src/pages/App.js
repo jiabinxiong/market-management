@@ -5,8 +5,8 @@ import store from '../store/store';
 
 import RouterIndex from '../router/index';
 
-const App = () => (
-    <Provider store={store}>
+const App = (props) => (
+    <Provider store={store} >
         <RouterIndex/>
     </Provider>
 );

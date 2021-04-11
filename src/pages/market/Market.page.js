@@ -10,13 +10,13 @@ import MarketNewPopPage from './MarketNewPop.page';
 
 import { WindowPopComponent } from '../../components';
 
-import { MarketAPI } from '../../effectAPI'
+import { MarketAPI, MarketLAPI } from '../../effectAPI'
 
-export default function MarketPage() {
+export default function MarketPage(props) {
     const [ windowMarketPopVisible, setWindowMarketPopVisible ] = useState(false);
 
     function marketStatusHandle(status) {
-        setWindowMarketPopVisible(status.windowMarketPopVisible);
+        // setWindowMarketPopVisible(status.windowMarketPopVisible);
     }
 
     useEffect(() => {
@@ -30,22 +30,16 @@ export default function MarketPage() {
             );
         }
     }, []);
-
-    function popCloseCallback() {
-        setWindowMarketPopVisible(false);
-    }
-
-    function popDetermineCallback(obj) {
-        obj.close('determine', () => {
-            setWindowMarketPopVisible(false);
-        });
-    }
-
+    
     return (
         <div className="market">
             <div className="market-l">
+                {/* {
+                    // console.log(window.location.href)
+                    !MarketAPI.isUrl(window.location.href) ? <MarketLPage/> : null                 
+                } */}
+                
                 <MarketLPage/>
-
                 {/*<div className="market-list">*/}
                 {/*    <MarketListPage/>*/}
                 {/*</div>*/}

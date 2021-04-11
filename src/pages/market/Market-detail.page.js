@@ -7,9 +7,15 @@ import { MapComponent } from '../../components';
 
 function MarketDetailPage(props) {
     const { marketListHandleReducer } = props;
-    console.log(marketListHandleReducer);
+    
     return (
         <div className="market-detail-info">
+            <div className="market-detail-logo">
+                {
+                    marketListHandleReducer.logo !== '' ? <img className="img" src={`${IMG_SERVER}${marketListHandleReducer.logo}`}/> : null
+                }
+                
+            </div>
             <div className="market-detail-info-title">
                 <h1 className="title">{marketListHandleReducer.name}</h1>
             </div>
@@ -53,14 +59,16 @@ function MarketDetailPage(props) {
                     { marketListHandleReducer.address.text }
                 </div>
                 <div className="map">
-                    <MapComponent
+                  
+                    {/* <MapComponent
                         center={
+                            marketListHandleReducer.address.lnglat !== '' ? 
                             [
                                 parseFloat(marketListHandleReducer.address.lnglat.split(',')[0]),
                                 parseFloat(marketListHandleReducer.address.lnglat.split(',')[1])
-                            ]
+                            ] : false
                         }
-                    />
+                    /> */}
                 </div>
             </div>
             <div className="market-detail-info-block">

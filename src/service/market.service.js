@@ -8,7 +8,7 @@ class MarketService {
     }
 
     query(data = {}) {
-        return get(`${HTTP_SERVER}/api/management/queryMarket`, {});
+        return get(`${HTTP_SERVER}/api/management/queryMarket`, data);
     }
 
     search(data) {

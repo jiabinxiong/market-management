@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PerfectScrollbar from "react-perfect-scrollbar";
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { Select } from 'antd';
 import tool from '../../common/tool';
 const { Option } = Select;
@@ -18,7 +18,7 @@ function MarketLPage(props) {
     function marketLStatusHandle(status) {
 
     }
-    useEffect(() => {
+    useEffect(() => {       
         MarketLAPI.subscribeToFriendStatus(marketLStatusHandle, props);
 
         return () => {
@@ -26,10 +26,11 @@ function MarketLPage(props) {
         }
     }, [
         props.marketDialogTypeReducer, props.marketDialogTypeReducer,
-        props.marketListReducer, props.marketNewIptReducer, props.marketNewPromptReducer
+        props.marketListReducer, props.marketNewIptReducer, props.marketNewPromptReducer, props.location
     ]);
 
 
+    
     return (
         <Fragment>
             <div className="market-l-t">
@@ -71,6 +72,7 @@ function MarketLPage(props) {
                     </ul>
                 </div>
             </div>
+            
             <div className="market-list">
                 {  props.marketListLoadingReducer ? <LoadingComponent/> : null }
                 {   props.marketListReducer.length > 0 ?
@@ -79,28 +81,28 @@ function MarketLPage(props) {
                             {
                                 props.marketListReducer.map((item, index) => {
                                     return <li
-                                        onClick={ (e) => MarketLAPI.marketListHandle(e, item) }
-                                        // className={`li ${tool.filterUrl('id') === item._id ? 'select-li' : ''}`}
-                                        className={`li ${tool.filterUrl('id') === '' ? 'select-li' : ''}`}
+                                        onClick={ (e) => MarketLAPI.marketListHandle(e, item) }                                        
+                                        className={`li ${MarketLAPI.listSelect(item._id, index)}`}
                                         key={item._id}
                                     >
-                                        <Link className="link" to={`/home/market?id=${item._id}`}>
-                                            <div className="r">
-                                                <div
-                                                    onClick={ (e) => MarketLAPI.deleteMarketHandle(item, MARKET_OPERATE_TYPE.DELETE, index, e) }
-                                                    className="delete-btn btn">
-                                                    删除
-                                                </div>
-                                                <div
-                                                    onClick={
-                                                        (e) => MarketLAPI.dialogUpdateHandle(
-                                                            item, MARKET_OPERATE_TYPE.UPDATE, props.commonCityReducer, props.commonCountyReducer, e
-                                                        )
-                                                    }
-                                                    className="update-btn btn">
-                                                    修改
-                                                </div>
+                                        <div className="r">
+                                            <div
+                                                onClick={ (e) => MarketLAPI.deleteMarketHandle(item, MARKET_OPERATE_TYPE.DELETE, index, e) }
+                                                className="delete-btn btn">
+                                                删除
                                             </div>
+                                            <div
+                                                onClick={
+                                                    (e) => MarketLAPI.dialogUpdateHandle(
+                                                        item, MARKET_OPERATE_TYPE.UPDATE, props.commonCityReducer, props.commonCountyReducer, e
+                                                    )
+                                                }
+                                                className="update-btn btn">
+                                                修改
+                                            </div>
+                                        </div>
+                                        <Link className="link" to={`/home/market?province=${tool.filterUrl('province')}&id=${item._id}`}>
+                                        {/* <Link className="link" to={`/home/market?id=${item._id}`}> */}
                                             <div className="l">
                                                 <h3 className="sub-title">
                                                     {item.name}
@@ -135,7 +137,7 @@ function MarketLPage(props) {
     );
 }
 
-export default connect(
+export default withRouter(connect(
     data => ({
         commonProvinceReducer: data.commonProvinceReducer,
         commonCityReducer: data.commonCityReducer,
@@ -170,4 +172,4 @@ export default connect(
         marketIsNewPromptAction: marketAction.isNewPrompt,
 
     }
-)(MarketLPage);
+)(MarketLPage));

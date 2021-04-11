@@ -12,6 +12,8 @@ const MarketLAPI = {
     isNewBtn: true,
     isUpdateBtn: true,
     isDeleteBtn: true,
+    copyUrl: '',
+    provinceCode: '',
     iptVerify: function() {
         const marketNewIptReducer = this.props.marketNewIptReducer;
         const copyMarketNewPromptModule = JSON.parse(JSON.stringify(marketNewPromptModule));
@@ -123,6 +125,17 @@ const MarketLAPI = {
 
         return isReturn;
     },
+
+    listSelect: function(id, index) {
+        if( tool.filterUrl('id') === id) {
+            return 'select-li';
+        } else if (tool.filterUrl('id') === '') {
+            if(index === 0) {
+                return 'select-li';
+            }
+        }
+    },
+
     dialogOpenHandle: function() {
         this.props.addMarketDialogAction(true);
         this.props.marketDialogTypeAction(MARKET_DIALOG_TYPE.NEW);
@@ -422,22 +435,64 @@ const MarketLAPI = {
         this.props.marketDeleteChangeAction(item);
     },
 
-    subscribeToFriendStatus: function(marketLStatusHandle, props) {
-        this.props = props;
-        if(this.isQueryList) {
-            marketService.query({}).then((data) => {
-                props.marketListLoadingAction(false);
-                this.isQueryList = false;
-                if(data.data.code === 0) {
-                    props.marketListQueryAction(data.data.list);
-                    // props.marketListHandleAction(data.data.list[0]);
+    listQueryFun: function(props, obj) {
+        marketService.query(obj).then((data) => {
+            props.marketListLoadingAction(false);
+            this.isQueryList = false;
+            if(data.data.code === 0) {
+                props.marketListQueryAction(data.data.list);
+                if (tool.filterUrl('id') === '') {
+                    props.marketListHandleAction(data.data.list[0]);
+                } else {
+                    props.marketListHandleAction(data.data.list.filter((v, i) => v._id === tool.filterUrl('id'))[0]);
                 }
-            });
+                
+            }
+        });
+    },
+    subscribeToFriendStatus: function(marketLStatusHandle, props) {
+        // console.log(props.location)
+        // console.log(tool.filterUrl('province'))
+        // console.log(this.provinceCode);
+
+        this.props = props;
+        console.log(this.isQueryList);
+        if(
+            ((tool.filterUrl('province') === '' || tool.filterUrl('id') !== '')  && this.isQueryList) ||
+            tool.filterUrl('province') !== '' && this.isQueryList ||
+            this.provinceCode !== tool.filterUrl('province')
+        ) {            
+            this.provinceCode = tool.filterUrl('province');
+            this.listQueryFun(props, {
+                province: tool.filterUrl('province')
+            })
         }
+
+        // if( tool.filterUrl('province') !== '' && this.isQueryList) {
+        //     this.listQueryFun(props)
+        // }
+
+        // console.log( tool.filterUrl('province'));
+        // if(this.provinceCode !== tool.filterUrl('province')) {
+        //     this.provinceCode = tool.filterUrl('province');
+        //     console.log('aaaaa');
+        //     this.listQueryFun(props);
+        // } else {
+        //     console.log('bbbbbbb');
+        //     this.provinceCode = ''
+        // }
+
+        // this.props = props;
+        // if(this.isQueryList) {     
+        //     console.log('ccccccc');       
+        //     this.listQueryFun(props);
+        // }
     },
     unsubscribeFromFriendStatus: function() {
         this.props = null;
         this.isUpdateBtn = true;
+        // this.copyUrl = '';
+        // this.isQueryList = true;
     }
 };
 
