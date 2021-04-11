@@ -1,4 +1,5 @@
 export const newMarketModule = {
+    logo: '',
     name: '',
     administration: {
         province: {},
@@ -30,6 +31,10 @@ export const marketMapModule = {
 };
 
 export const marketNewPromptModule = {
+    logo: {
+        text: '',
+        require: false
+    },
     name: {
         text: '',
         required: false

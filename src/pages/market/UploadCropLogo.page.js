@@ -7,11 +7,13 @@ import { uploadService } from '../../service';
 import { BtnComponent } from '../../components';
 import uploadComponent from '../../common/upload';
 
+// import { IMG_SERVER } from "../../constants/http.constant";
+
 import "cropperjs/dist/cropper.css";
 
 
 function UploadCropLogoPage(props) {
-    const { url = '', size = 5, uploadCallback=() => {} } = props;
+    const { url = '', size = 5, uploadCallback=() => {}, viewUrl='' } = props;
     const [ image, setImage ] = useState(url);
     const [cropper, setCropper] = useState('');
     const [ isUploadBtn, setIsUploadBtn ] = useState(true);
@@ -27,6 +29,7 @@ function UploadCropLogoPage(props) {
         }
         const reader = new FileReader();
         reader.onload = () => {
+            console.log(reader);
             setImage(reader.result);
         };
         reader.readAsDataURL(files[0]);
@@ -80,7 +83,9 @@ function UploadCropLogoPage(props) {
         <div className="crop-logo-block">
             <div className="upload-btn block">
                 <div className="logo-img">
-
+                    {
+                        url.length !== 0 ? <img src={url}/> : null
+                    }
                 </div>
                 <div className="ui-upload">
                     <div className="icon-block">
@@ -124,6 +129,8 @@ function UploadCropLogoPage(props) {
                     // viewMode={1}
                     guides={true}
                     initialAspectRatio={10 / 10}
+                    checkCrossOrigin={false}
+                    checkOrientation={false}
                     // minCropBoxHeight={10}
                     // minCropBoxWidth={10}
                     // background={false}

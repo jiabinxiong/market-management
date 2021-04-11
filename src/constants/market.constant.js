@@ -5,6 +5,7 @@ export const MARKET_OPERATE_TYPE = {
 };
 
 export const MARKET_CHANGE_TYPE = {
+    LOGO: 'logo',
     NAME: 'name',
     PROVINCE: 'province',
     COVER: 'cover',

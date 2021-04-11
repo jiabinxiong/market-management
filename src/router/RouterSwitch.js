@@ -24,6 +24,7 @@ const PrivateRoute = ({ component: Component, ...rest }, props) => {
 const RouterSwitch = () => (
     <Switch>
         <Route exact path="/login" component={ LoginPage }/>
+        {/*<PrivateRoute path="/" component={ HomePage } />*/}
         <PrivateRoute path="/home" component={ HomePage } />
         <Route paht="*" component={ NoPage } />
     </Switch>

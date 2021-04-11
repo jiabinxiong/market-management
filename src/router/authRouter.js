@@ -11,7 +11,7 @@ export default () => {
     let token = Cookies.get('token');
 
 
-    let { from } = location.state || { from: { pathname: "/home" } };
+    let { from } = location.state || { from: { pathname: "/home/market" } };
     if(token) {
         return <Redirect to={from} />;
     }

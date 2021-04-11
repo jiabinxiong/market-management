@@ -150,9 +150,11 @@ const MarketLAPI = {
         this.props.marketListHandleAction(item);
     },
 
-    marketLogoHandle: function(data, code) {
-        console.log(data);
-        console.log(code);
+    marketLogoHandle: function(data, code, type) {
+        this.props.marketNewIptAction({
+            v: data.data.url,
+            type: type
+        });
     },
 
     intChange: function(v, type) {

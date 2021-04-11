@@ -30,7 +30,7 @@ class AuthService {
             } else {
                 this.token = data.data.token;
                 Cookies.set(TOKEN, data.data.token);
-                props.history.push('home');
+                props.history.push('home/market');
             }
 
             props.visibleLoginBtnAction(false);

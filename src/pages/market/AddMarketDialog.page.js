@@ -13,8 +13,6 @@ import UploadCropLogoPage from './UploadCropLogo.page';
 
 
 function AddMarketDialogPage({props: props}) {
-    console.log(props.commonProvinceReducer)
-
     return <Dialog
             className={`${props.marketDialogTypeReducer === MARKET_DIALOG_TYPE.DELETE ? '' : 'market-new-pop'}`}
             titleText="创建市场"
@@ -36,7 +34,10 @@ function AddMarketDialogPage({props: props}) {
                             <div className="li-block-form ui-li-block-form ">
                                 <div className="ui-li-block-ipt-form market-upload-logo-li-ipt-block">
                                     <UploadCropLogoPage
-                                        uploadCallback={ (data, code) => MarketLAPI.marketLogoHandle(data, code) }
+                                        url={
+                                            props.marketNewIptReducer[MARKET_CHANGE_TYPE.LOGO].length !== 0 ? IMG_SERVER + props.marketNewIptReducer[MARKET_CHANGE_TYPE.LOGO] : ''
+                                        }
+                                        uploadCallback={ (data, code) => MarketLAPI.marketLogoHandle(data, code, MARKET_CHANGE_TYPE.LOGO) }
                                     />
                                 </div>
 

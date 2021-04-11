@@ -1,7 +1,9 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PerfectScrollbar from "react-perfect-scrollbar";
+import { Link } from 'react-router-dom';
 import { Select } from 'antd';
+import tool from '../../common/tool';
 const { Option } = Select;
 
 import { marketAction } from '../../redux/actions';
@@ -26,6 +28,7 @@ function MarketLPage(props) {
         props.marketDialogTypeReducer, props.marketDialogTypeReducer,
         props.marketListReducer, props.marketNewIptReducer, props.marketNewPromptReducer
     ]);
+
 
     return (
         <Fragment>
@@ -77,34 +80,38 @@ function MarketLPage(props) {
                                 props.marketListReducer.map((item, index) => {
                                     return <li
                                         onClick={ (e) => MarketLAPI.marketListHandle(e, item) }
-                                        className="li" key={item._id}>
-                                        <div className="r">
-                                            <div
-                                                onClick={ (e) => MarketLAPI.deleteMarketHandle(item, MARKET_OPERATE_TYPE.DELETE, index, e) }
-                                                className="delete-btn btn">
-                                                删除
+                                        // className={`li ${tool.filterUrl('id') === item._id ? 'select-li' : ''}`}
+                                        className={`li ${tool.filterUrl('id') === '' ? 'select-li' : ''}`}
+                                        key={item._id}
+                                    >
+                                        <Link className="link" to={`/home/market?id=${item._id}`}>
+                                            <div className="r">
+                                                <div
+                                                    onClick={ (e) => MarketLAPI.deleteMarketHandle(item, MARKET_OPERATE_TYPE.DELETE, index, e) }
+                                                    className="delete-btn btn">
+                                                    删除
+                                                </div>
+                                                <div
+                                                    onClick={
+                                                        (e) => MarketLAPI.dialogUpdateHandle(
+                                                            item, MARKET_OPERATE_TYPE.UPDATE, props.commonCityReducer, props.commonCountyReducer, e
+                                                        )
+                                                    }
+                                                    className="update-btn btn">
+                                                    修改
+                                                </div>
                                             </div>
-                                            <div
-                                                onClick={
-                                                    (e) => MarketLAPI.dialogUpdateHandle(
-                                                        item, MARKET_OPERATE_TYPE.UPDATE, props.commonCityReducer, props.commonCountyReducer, e
-                                                    )
-                                                }
-                                                className="update-btn btn">
-                                                修改
+                                            <div className="l">
+                                                <h3 className="sub-title">
+                                                    {item.name}
+                                                </h3>
+                                                <div className="detail-text">
+                                                    <WrapComponent
+                                                        text={item.summary}
+                                                    />
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="l">
-                                            <h3 className="sub-title">
-                                                {item.name}
-                                            </h3>
-                                            <div className="detail-text">
-                                                <WrapComponent
-                                                    text={item.summary}
-                                                />
-                                            </div>
-                                        </div>
-
+                                        </Link>
                                     </li>
                                 })
                             }
@@ -139,7 +146,8 @@ export default connect(
         marketNewIptReducer: data.marketNewIptReducer,
         marketNewPromptReducer: data.marketNewPromptReducer,
         marketListLoadingReducer: data.marketListLoadingReducer,
-        marketDialogTypeReducer: data.marketDialogTypeReducer
+        marketDialogTypeReducer: data.marketDialogTypeReducer,
+        marketListHandleReducer: data.marketListHandleReducer
     }), {
         addMarketDialogAction: marketAction.dialog,
         // addMarketAction: marketAction.add,

@@ -18,6 +18,23 @@ class Tool {
 
         return copyObj;
     }
+
+    filterUrl(str, url = '') {
+
+        if(url === '') {
+            const urlStr = window.location.href;
+            if(urlStr.split(str + '=').length == 1) {
+                return '';
+            } else {
+                const intercept = urlStr.split(str + '=')[1].split('&')[0];
+                return intercept;
+            }
+
+        } else {
+            const intercept = url.split(str + '=')[1].split('&')[0];
+            return intercept;
+        }
+    }
 }
 
 

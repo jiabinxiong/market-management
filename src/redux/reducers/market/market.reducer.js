@@ -26,7 +26,7 @@ function marketListReducer(state = [], action) {
     }
 }
 
-function addMarketDialogReducer(state = true, action) {
+function addMarketDialogReducer(state = false, action) {
     switch (action.type) {
         case marketActionType.DIALOG:
             return action.data;
@@ -95,7 +95,9 @@ function marketNewIptReducer(state = newMarketModule, action) {
                 copyNewState.administration[ADMINISTRATION.COUNTY] = {};
             }
 
-            if(action.data.type === ADMINISTRATION.PROVINCE || action.data.type === ADMINISTRATION.CITY || action.data.type === ADMINISTRATION.COUNTY) {
+            if (action.data.type === MARKET_CHANGE_TYPE.LOGO) {
+                copyNewState[MARKET_CHANGE_TYPE.LOGO] = action.data.v;
+            }else if(action.data.type === ADMINISTRATION.PROVINCE || action.data.type === ADMINISTRATION.CITY || action.data.type === ADMINISTRATION.COUNTY) {
                 copyNewState.administration[action.data.type].code = action.data.v.value;
                 copyNewState.administration[action.data.type].name = action.data.v.children;
             } else if (action.data.type === MARKET_CHANGE_TYPE.COVER) {
