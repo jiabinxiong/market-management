@@ -13,6 +13,7 @@ import UploadCropLogoPage from './UploadCropLogo.page';
 
 
 function AddMarketDialogPage({props: props}) {
+    console.log(props);
     return <Dialog
             className={`${props.marketDialogTypeReducer === MARKET_DIALOG_TYPE.DELETE ? '' : 'market-new-pop'}`}
             titleText="创建市场"

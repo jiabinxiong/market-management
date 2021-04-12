@@ -75,7 +75,7 @@ function MarketLPage(props) {
             
             <div className="market-list">
                 {  props.marketListLoadingReducer ? <LoadingComponent/> : null }
-                {   props.marketListReducer.length > 0 ?
+                {   props.marketListReducer.length > 0 && !props.marketListLoadingReducer ?
                     <PerfectScrollbar>
                         <ul className="market-list-ul">
                             {

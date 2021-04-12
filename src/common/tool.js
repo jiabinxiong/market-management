@@ -35,6 +35,9 @@ class Tool {
             return intercept;
         }
     }
+    checkNullObj(obj) {
+        return Object.keys(obj).length === 0;   
+    }
 }
 
 

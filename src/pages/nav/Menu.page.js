@@ -1,19 +1,17 @@
 import React, { useEffect,useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import tool from '../../common/tool';
 
 import { Menu } from 'antd';
 const { SubMenu } = Menu;
 
-export default function MenuPage(props) {
+export default function MenuPage({props: props}) {
     
     useEffect(() => {
 
     }, [])
 
-    function provinceHandle (data, index) {
-        console.log(data);
-    }
 
     return (
         <>
@@ -26,9 +24,11 @@ export default function MenuPage(props) {
                 >
                     <SubMenu key="market" title="市场">
                         {
-                            props.props.commonProvinceReducer.map((data, index) =>
-                                <Menu.Item key={ data.code }>                                    
-                                    <NavLink to={`/home/market?province=${data.code}`}>
+                            props.commonProvinceReducer.map((data, index) =>
+                                <Menu.Item className={`${tool.filterUrl('province', props.location.search) === data.code ? 'select-li' : ''}`} key={ data.code }>                                    
+                                    <NavLink 
+                                                                              
+                                        to={`/home/market?province=${data.code}`}>
                                         { data.name }
                                     </NavLink>
                                 </Menu.Item>

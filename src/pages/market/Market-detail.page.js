@@ -5,7 +5,7 @@ import { IMG_SERVER } from "../../constants/http.constant";
 import { MapComponent } from '../../components';
 
 
-function MarketDetailPage(props) {
+export default function MarketDetailPage({props: props}) {
     const { marketListHandleReducer } = props;
     
     return (
@@ -60,7 +60,7 @@ function MarketDetailPage(props) {
                 </div>
                 <div className="map">
                   
-                    {/* <MapComponent
+                    <MapComponent
                         center={
                             marketListHandleReducer.address.lnglat !== '' ? 
                             [
@@ -68,7 +68,7 @@ function MarketDetailPage(props) {
                                 parseFloat(marketListHandleReducer.address.lnglat.split(',')[1])
                             ] : false
                         }
-                    /> */}
+                    />
                 </div>
             </div>
             <div className="market-detail-info-block">
@@ -137,10 +137,3 @@ function MarketDetailPage(props) {
 }
 
 
-export default connect(
-    data => ({
-        marketListHandleReducer: data.marketListHandleReducer
-    }), {
-
-    }
-)(MarketDetailPage)

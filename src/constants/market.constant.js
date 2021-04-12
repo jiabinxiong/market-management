@@ -19,6 +19,13 @@ export const MARKET_CHANGE_TYPE = {
     ADDRESS: 'address'
 };
 
+
+export const  MARKET_TAB_TYPE = {
+    DETAIL: '市场详情',
+    SHOP: '市场店铺',
+    IMG_VIDEO: '图片/视频'
+};
+
 export const MARKET_DIALOG_TYPE = {
     NEW: 'new',
     UPDATE: 'update',

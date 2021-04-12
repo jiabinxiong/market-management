@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import { MenuAPI } from '../../effectAPI';
 import { menuAction, commonAction } from '../../redux/actions';
@@ -28,7 +29,7 @@ function NavPage(props) {
     );
 }
 
-export default connect(
+export default withRouter(connect(
     data =>({
         menuReducer: data.menuReducer,
         commonProvinceReducer: data.commonProvinceReducer,
@@ -42,6 +43,4 @@ export default connect(
         commonCityAction: commonAction.queryCity,
         commonCountyAction: commonAction.queryCounty,
     }
-)(
-    NavPage
-);
+)(NavPage));

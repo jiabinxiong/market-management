@@ -377,6 +377,10 @@ const MarketLAPI = {
                                });
                                this.props.addMarketDialogAction(false);
                                this.props.marketEmptyChangeAction();
+                               this.props.marketListHandleAction({
+                                    ...this.props.marketNewIptReducer,
+                                    _id: data.data._id
+                               });
 
                                this.isNewBtn = true;
                            })
@@ -436,13 +440,19 @@ const MarketLAPI = {
     },
 
     listQueryFun: function(props, obj) {
+        props.marketListLoadingAction(true);
         marketService.query(obj).then((data) => {
             props.marketListLoadingAction(false);
             this.isQueryList = false;
             if(data.data.code === 0) {
                 props.marketListQueryAction(data.data.list);
-                if (tool.filterUrl('id') === '') {
-                    props.marketListHandleAction(data.data.list[0]);
+                if (tool.filterUrl('id') === '') {                    
+                    if(data.data.list.length !== 0) {
+                        props.marketListHandleAction(data.data.list[0]);
+                    } else {
+                        props.marketListHandleAction(newMarketModule);
+                    }
+                    
                 } else {
                     props.marketListHandleAction(data.data.list.filter((v, i) => v._id === tool.filterUrl('id'))[0]);
                 }
@@ -451,12 +461,7 @@ const MarketLAPI = {
         });
     },
     subscribeToFriendStatus: function(marketLStatusHandle, props) {
-        // console.log(props.location)
-        // console.log(tool.filterUrl('province'))
-        // console.log(this.provinceCode);
-
-        this.props = props;
-        console.log(this.isQueryList);
+        this.props = props;        
         if(
             ((tool.filterUrl('province') === '' || tool.filterUrl('id') !== '')  && this.isQueryList) ||
             tool.filterUrl('province') !== '' && this.isQueryList ||
@@ -467,26 +472,6 @@ const MarketLAPI = {
                 province: tool.filterUrl('province')
             })
         }
-
-        // if( tool.filterUrl('province') !== '' && this.isQueryList) {
-        //     this.listQueryFun(props)
-        // }
-
-        // console.log( tool.filterUrl('province'));
-        // if(this.provinceCode !== tool.filterUrl('province')) {
-        //     this.provinceCode = tool.filterUrl('province');
-        //     console.log('aaaaa');
-        //     this.listQueryFun(props);
-        // } else {
-        //     console.log('bbbbbbb');
-        //     this.provinceCode = ''
-        // }
-
-        // this.props = props;
-        // if(this.isQueryList) {     
-        //     console.log('ccccccc');       
-        //     this.listQueryFun(props);
-        // }
     },
     unsubscribeFromFriendStatus: function() {
         this.props = null;
